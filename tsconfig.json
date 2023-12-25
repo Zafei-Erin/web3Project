@@ -12,7 +12,6 @@
         "src/*"
       ]
     },
-    "typeRoots": ["node_modules/@0x/typescript-typings/types", "node_modules/@types"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",

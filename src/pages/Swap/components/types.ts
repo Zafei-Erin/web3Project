@@ -1,7 +1,5 @@
-import { Address } from "wagmi";
-
 export type Token = {
-  address: Address;
+  address: string;
   chainId: number;
   decimals: number;
   logoURI: string;

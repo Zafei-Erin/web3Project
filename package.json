@@ -4,24 +4,25 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "dev": "vite --port 3000",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@0x/contract-wrappers": "^13.23.8",
+    "@ethersproject/providers": "^5.5.0",
     "alchemy-sdk": "^3.1.0",
-    "ethers": "^6.9.1",
+    "bignumber.js": "^9.1.0",
+    "ethers": "^5.5.1",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.0",
     "sort-by": "^1.2.0",
-    "viem": "^1.20.3",
-    "wagmi": "^1.4.12",
-    "web3": "^4.3.0"
+    "v5": "^0.1.2",
+    "web3": "^1.8.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

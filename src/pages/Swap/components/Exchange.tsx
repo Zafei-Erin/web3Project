@@ -1,23 +1,20 @@
-import { ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Contract } from "@ethersproject/contracts";
+import { ethers } from "ethers";
 
-import { ERC20TokenContract } from "@0x/contract-wrappers";
-import Web3 from "web3";
 import { FetchQuote, formatBalance, getBalance } from "~/api";
 import { fetchPrice } from "~/api/FetchPrice";
 import { useUserAccount } from "~/context/userAddrProvider";
 import { useDebounce } from "~/utils/useDebounce";
-import { AmountIn, AmountOut, Balance, Loader } from ".";
+import { AmountIn, AmountOut, Balance } from ".";
 import { Token } from "./types";
-import { BigNumber } from "@0x/utils";
-import { erc20ABI, useContractRead } from "wagmi";
-import { SwapButton } from "./SwapButton";
-import { parseUnits } from "ethers";
 
 export enum SwapState {
+  READY,
+  UNREADY,
   LOADING,
   INSUFFICIENT_FUNDS,
   ERROR,
-  READY,
 }
 
 export const Exchange = () => {
@@ -27,9 +24,9 @@ export const Exchange = () => {
   const [toBalance, setToBalance] = useState("0.00");
   const [fromValue, setFromValue] = useState(0.0);
   const [toValue, setToValue] = useState("0.00");
-  const [statusMessage, setStatusMessage] = useState("");
-  const [state, setState] = useState(SwapState.READY);
-  // const[disabled, setDisable] = useState(false)
+  const [gasFee, setGasFee] = useState("0.00");
+  const [state, setState] = useState(SwapState.UNREADY);
+  const [stateMessage, setStateMessage] = useState("");
 
   const debouncedFromValue = useDebounce(fromValue, 300);
   const { accountAddr } = useUserAccount();
@@ -40,6 +37,7 @@ export const Exchange = () => {
     }
     switch (state) {
       case SwapState.READY:
+      case SwapState.UNREADY:
       case SwapState.ERROR:
         return "Swap";
       case SwapState.INSUFFICIENT_FUNDS:
@@ -47,16 +45,7 @@ export const Exchange = () => {
       case SwapState.LOADING:
         return "Loading...";
     }
-  }, [state]);
-
-  const disabled = useMemo(
-    () =>
-      fromBalance && fromValue
-        ? parseUnits(fromValue.toString(), fromToken?.decimals) >
-          parseUnits(fromBalance)
-        : true,
-    [fromValue, fromBalance]
-  );
+  }, [state, accountAddr]);
 
   const fetchBalance = async () => {
     if (!fromToken?.address || !toToken?.address || !accountAddr) {
@@ -100,17 +89,16 @@ export const Exchange = () => {
     try {
       const result = await fetchPrice(params);
       setToValue(result.buyAmount.toFixed(6).toString());
+      if (parseFloat(fromBalance) < fromValue) {
+        setState(SwapState.INSUFFICIENT_FUNDS);
+        return;
+      }
+      setState(SwapState.READY);
     } catch (e) {
       setToValue("0.00");
       setState(SwapState.ERROR);
       if (e instanceof Error) {
-        setStatusMessage("Error: " + e.message);
-      }
-    } finally {
-      if (parseFloat(fromBalance) < fromValue) {
-        setState(SwapState.INSUFFICIENT_FUNDS);
-      } else {
-        setState(SwapState.READY);
+        setStateMessage("Error: " + e.message);
       }
     }
   };
@@ -122,43 +110,52 @@ export const Exchange = () => {
     const params = {
       sellToken: fromToken.address,
       buyToken: toToken.address,
-      sellAmount: amount,
-      takerAddress: accountAddr,
+      sellAmount: amount.toString(),
     };
 
     try {
       const resp = await FetchQuote(params);
+      setGasFee(resp.estimatedGas);
+      console.log(resp);
+
       // const toAmount = resp.buyAmount / 10 ** toToken.decimals;
-      // const gasFeeEstimate = resp.estimatedGas;
+      setState(SwapState.READY);
       return resp;
     } catch (error) {
-      console.log(error);
-    } finally {
-      setState(SwapState.READY);
+      setState(SwapState.ERROR);
     }
   };
 
-  const quoteJSON = getQuote().then((data) => data);
+  const trySwap = async () => {
+    if (!fromToken?.address) return;
 
-  // const trySwap = async () => {
-  //   const web3 = new Web3(Web3.givenProvider);
-  //   const quoteJSON = await getQuote();
-  //   const maxApproval = new BigNumber(2).pow(256).minus(1);
-  //   if (!web3.eth.currentProvider) {
-  //     return;
-  //   }
-  //   const contract = new ERC20TokenContract(
-  //     fromToken.address,
-  //     web3.eth.currentProvider
-  //   );
-  //   console.log(contract);
-  //   const tx = contract
-  //     .approve(quoteJSON.allowanceTarget, maxApproval)
-  //     .getABIEncodedTransactionData();
-  //   // Perform the swap
-  //   const receipt = await web3.eth.sendTransaction(tx);
-  //   console.log("receipt: ", receipt);
-  // };
+    // approve allowance
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const erc20Abi = [
+      "function approve(address spender, uint256 amount) public returns (bool)",
+    ];
+    const contract = new Contract(fromToken.address, erc20Abi, signer);
+    const quoteJSON = await getQuote();
+    const maxApproval = BigInt(2 ** 255).toString();
+    try {
+      await contract.approve(quoteJSON.allowanceTarget, maxApproval);
+    } catch (error) {
+      setStateMessage((error as Error).message);
+    }
+
+    // swap
+    await signer
+      .sendTransaction({
+        from: accountAddr,
+        to: accountAddr,
+        value: ethers.utils.parseEther(fromValue.toString()),
+      })
+      .then((data) => console.log(JSON.stringify(data)))
+      .catch((error) => {
+        setStateMessage((error as Error).message);
+      });
+  };
 
   useEffect(() => {
     getPrice();
@@ -187,35 +184,31 @@ export const Exchange = () => {
         <Balance tokenBalance={toBalance} />
       </div>
 
-      {fromToken?.address && (
-        <SwapButton
-          disabled={disabled}
-          fromAddress={fromToken?.address}
-          getQuote={getQuote}
+      <div className="mb-8 px-2 w-[100%]">
+        <span className="font-semibold">Estimated Gas Fee: </span>
+        {gasFee}
+      </div>
+
+      {accountAddr && fromValue !== 0 && state == SwapState.READY ? (
+        <button
+          className="w-[260px] border-none outline-none px-6 py-2 font-poppins font-bold text-lg rounded-2xl leading-[24px] transition-all min-h-[56px] bg-violet-600/80 text-gray-100 cursor-pointer"
           onClick={trySwap}
         >
           Swap
-        </SwapButton>
+        </button>
+      ) : (
+        <button
+          disabled
+          className="w-[260px] border-none outline-none px-6 py-2 font-poppins font-bold text-lg rounded-2xl leading-[24px] transition-all min-h-[56px] bg-violet-600/30 text-gray-100 cursor-not-allowed"
+        >
+          {swapButtonTitle}
+        </button>
       )}
 
+      {/* todo: only shows up for 3 seconds */}
       <p className="font-poppins font-lg text-gray-900 font-bold mt-7">
-        {statusMessage}
+        {stateMessage}
       </p>
     </div>
-  );
-};
-
-type Props = {
-  children: ReactNode;
-};
-
-const DisabledButton: React.FC<Props> = (props) => {
-  return (
-    <button
-      disabled
-      className="w-[260px] border-none outline-none px-6 py-2 font-poppins font-bold text-lg rounded-2xl leading-[24px] transition-all min-h-[56px] bg-violet-600/30 text-white/80 cursor-not-allowed"
-    >
-      {props.children}
-    </button>
   );
 };
