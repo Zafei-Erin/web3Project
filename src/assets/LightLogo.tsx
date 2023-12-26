@@ -1,7 +1,6 @@
-import { FunctionComponent } from "react";
 import { IconProps } from "./types";
 
-export const Logo: FunctionComponent<IconProps> = (props) => {
+export const Logo: React.FC<IconProps> = (props) => {
   return (
     <svg
       className="w-6 h-6 text-gray-800 dark:text-white"

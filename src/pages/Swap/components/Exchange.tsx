@@ -8,6 +8,7 @@ import { useUserAccount } from "~/context/userAddrProvider";
 import { useDebounce } from "~/utils/useDebounce";
 import { AmountIn, AmountOut, Balance } from ".";
 import { Token } from "./types";
+import { SwapIcon } from "~/assets";
 
 export enum SwapState {
   READY,
@@ -141,20 +142,32 @@ export const Exchange = () => {
     try {
       await contract.approve(quoteJSON.allowanceTarget, maxApproval);
     } catch (error) {
-      setStateMessage((error as Error).message);
+      if (error instanceof Error) {
+        setStateMessage(error.message);
+      } else {
+        setStateMessage("Error: fail to approve allowance");
+      }
+      return;
     }
 
     // swap
-    await signer
-      .sendTransaction({
+    try {
+      await signer.sendTransaction({
         from: accountAddr,
         to: accountAddr,
         value: ethers.utils.parseEther(fromValue.toString()),
-      })
-      .then((data) => console.log(JSON.stringify(data)))
-      .catch((error) => {
-        setStateMessage((error as Error).message);
       });
+    } catch (error) {
+      if (error instanceof Error) {
+        setStateMessage(error.message);
+      } else {
+        setStateMessage("Error: fail to transfer token");
+      }
+      return;
+    }
+
+    setStateMessage("Swapped succefully!");
+    setFromValue(0);
   };
 
   useEffect(() => {
@@ -167,7 +180,7 @@ export const Exchange = () => {
 
   return (
     <div className="flex flex-col w-full items-center">
-      <div className="mb-8 w-[100%]">
+      <div className="w-[100%]">
         <AmountIn
           fromToken={fromToken}
           setFromToken={setFromToken}
@@ -175,7 +188,15 @@ export const Exchange = () => {
         />
         <Balance tokenBalance={fromBalance} />
       </div>
-      <div className="mb-8 w-[100%]">
+      <SwapIcon
+        className="w-10 h-10 mt-4 p-2 text-violet-500 rounded-lg hover:bg-violet-200 hover:text-violet-500 transition hover:rotate-180"
+        onClick={() => {
+          const temp = fromToken;
+          setFromToken(toToken);
+          setToToken(temp);
+        }}
+      />
+      <div className="w-[100%]">
         <AmountOut
           toToken={toToken}
           toValue={toValue}
@@ -191,7 +212,7 @@ export const Exchange = () => {
 
       {accountAddr && fromValue !== 0 && state == SwapState.READY ? (
         <button
-          className="w-[260px] border-none outline-none px-6 py-2 font-poppins font-bold text-lg rounded-2xl leading-[24px] transition-all min-h-[56px] bg-violet-600/80 text-gray-100 cursor-pointer"
+          className="w-[260px] border-none outline-none px-6 py-2 font-poppins font-bold text-lg rounded-2xl leading-[24px] transition-all min-h-[56px] bg-violet-600/80 text-gray-100 cursor-pointer transition hover:bg-violet-600"
           onClick={trySwap}
         >
           Swap
