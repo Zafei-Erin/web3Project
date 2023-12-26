@@ -1,14 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
 import { Contract } from "@ethersproject/contracts";
 import { ethers } from "ethers";
+import { useEffect, useMemo, useState } from "react";
 
 import { FetchQuote, formatBalance, getBalance } from "~/api";
 import { fetchPrice } from "~/api/FetchPrice";
+import { SwapIcon } from "~/assets";
 import { useUserAccount } from "~/context/userAddrProvider";
 import { useDebounce } from "~/utils/useDebounce";
 import { AmountIn, AmountOut, Balance } from ".";
 import { Token } from "./types";
-import { SwapIcon } from "~/assets";
 
 export enum SwapState {
   READY,
