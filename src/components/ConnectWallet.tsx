@@ -7,19 +7,24 @@ const ConnectWallet = () => {
   const updateAccount = (account: string[]) => {
     setAccountAddr(account[0]);
   };
-
+  const disconnectAccount = () => {
+    setAccountAddr("");
+    window.location.reload();
+  };
   useEffect(() => {
     window.ethereum?.on("accountsChanged", updateAccount);
+    window.ethereum?.on("disconnect", disconnectAccount);
 
     return () => {
       window.ethereum?.removeListener("accountsChanged", updateAccount);
+      window.ethereum?.removeListener("disconnect", disconnectAccount);
     };
   }, []);
 
   const connect = async () => {
     if (typeof window.ethereum !== "undefined") {
       try {
-        const account = await ethereum.request({
+        const account = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
         setAccountAddr(account[0]);
@@ -31,21 +36,6 @@ const ConnectWallet = () => {
     }
   };
 
-  // const getBalance = async () => {
-  //   const balance = formatBalance(
-  //     await window.ethereum?.request({
-  //       method: "eth_getBalance",
-  //       params: [accountAddr, "latest"],
-  //     })
-  //   );
-
-  //   const chainID = await window.ethereum?.request({
-  //     method: "eth_chainId",
-  //   });
-
-  //   console.log(balance, chainID);
-  // };
-
   return (
     <div>
       <button
@@ -56,9 +46,9 @@ const ConnectWallet = () => {
         }}
         className=" p-2 px-5 rounded-full font-semibold transition bg-violet-200 text-violet-600 hover:cursor-pointer hover:bg-violet-400 hover:text-white"
       >
-        {accountAddr !== ""
-          ? accountAddr.slice(0, 4) + "..." + accountAddr.slice(38)
-          : "Connect Wallet"}
+        {accountAddr == "" || accountAddr == undefined
+          ? "Connect Wallet"
+          : accountAddr?.slice(0, 4) + "..." + accountAddr?.slice(38)}
       </button>
     </div>
   );
