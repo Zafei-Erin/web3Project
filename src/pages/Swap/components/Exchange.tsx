@@ -18,6 +18,10 @@ export enum SwapState {
   ERROR,
 }
 
+const erc20Abi = [
+  "function approve(address spender, uint256 amount) public returns (bool)",
+];
+
 export const Exchange = () => {
   const [fromToken, setFromToken] = useState<Token>();
   const [toToken, setToToken] = useState<Token>();
@@ -100,6 +104,8 @@ export const Exchange = () => {
       setState(SwapState.ERROR);
       if (e instanceof Error) {
         setStateMessage("Error: " + e.message);
+      } else {
+        setStateMessage("Error: fail to fetch price");
       }
     }
   };
@@ -117,13 +123,15 @@ export const Exchange = () => {
     try {
       const resp = await FetchQuote(params);
       setGasFee(resp.estimatedGas);
-      console.log(resp);
-
-      // const toAmount = resp.buyAmount / 10 ** toToken.decimals;
       setState(SwapState.READY);
       return resp;
     } catch (error) {
       setState(SwapState.ERROR);
+      if (error instanceof Error) {
+        setStateMessage(error.message);
+      } else {
+        setStateMessage("Error: fail to fetch quote");
+      }
     }
   };
 
@@ -133,9 +141,7 @@ export const Exchange = () => {
     // approve allowance
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
-    const erc20Abi = [
-      "function approve(address spender, uint256 amount) public returns (bool)",
-    ];
+
     const contract = new Contract(fromToken.address, erc20Abi, signer);
     const quoteJSON = await getQuote();
     const maxApproval = BigInt(2 ** 255).toString();
@@ -172,6 +178,7 @@ export const Exchange = () => {
 
   useEffect(() => {
     getPrice();
+    setStateMessage("");
   }, [fromToken, toToken, debouncedFromValue]);
 
   useEffect(() => {
