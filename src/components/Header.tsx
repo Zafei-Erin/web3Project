@@ -15,9 +15,9 @@ const Header = () => {
               Swap
             </div>
           </Link>
-          <Link to={"/scan"}>
+          <Link to={"/explorer"}>
             <div className="p-2 px-4 rounded-md font-semibold items-center hover:bg-gray-100 hover:cursor-pointer">
-              Scan
+              Explorer
             </div>
           </Link>
         </div>
