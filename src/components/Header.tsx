@@ -1,5 +1,5 @@
 import { Link, Outlet } from "react-router-dom";
-import { Logo } from "../assets";
+import { LightLogo } from "../assets";
 import ConnectWallet from "./ConnectWallet";
 
 const Header = () => {
@@ -8,7 +8,7 @@ const Header = () => {
       <header className=" h-[100px] items-center flex justify-between px-12">
         <div className="flex items-center gap-5">
           <Link to={"/"}>
-            <Logo className=" w-10 h-10 pr-5" />
+            <LightLogo className=" w-10 h-10 pr-5" />
           </Link>
           <Link to={"/swap"}>
             <div className=" p-2 px-4 rounded-md font-semibold items-center hover:bg-gray-100 hover:cursor-pointer">
