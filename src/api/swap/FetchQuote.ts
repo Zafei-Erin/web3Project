@@ -19,7 +19,7 @@ export const FetchQuote = async (params: ParamsType) => {
   console.log("Quote: ", swapQuoteJSON);
 
   if (!response.ok) {
-    throw new Error(JSON.stringify("fail to fetch quotes"));
+    throw new Error("fail to fetch quotes");
   }
 
   return swapQuoteJSON;

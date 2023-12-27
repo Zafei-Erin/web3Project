@@ -2,8 +2,8 @@ import { Contract } from "@ethersproject/contracts";
 import { ethers } from "ethers";
 import { useEffect, useMemo, useState } from "react";
 
-import { FetchQuote, formatBalance, getBalance } from "~/api";
-import { fetchPrice } from "~/api/FetchPrice";
+import { FetchQuote, formatBalance, getBalance } from "~/api/swap";
+import { fetchPrice } from "~/api/swap/FetchPrice";
 import { SwapIcon } from "~/assets";
 import { useUserAccount } from "~/context/userAddrProvider";
 import { useDebounce } from "~/utils/useDebounce";

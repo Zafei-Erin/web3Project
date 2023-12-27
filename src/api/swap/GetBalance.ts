@@ -23,12 +23,12 @@ export const getBalance = async (
     redirect: "follow",
   });
   const balanceRespJSON = await response.json();
-  const resp: TokenBalance[] = balanceRespJSON.result.tokenBalances;
+  const data: TokenBalance[] = balanceRespJSON.result.tokenBalances;
   if (!response.ok) {
-    throw new Error(JSON.stringify("fail to get balance"));
+    throw new Error("fail to get balance");
   }
 
-  return resp;
+  return data;
 };
 
 export const formatBalance = (rawBalance: string): string => {

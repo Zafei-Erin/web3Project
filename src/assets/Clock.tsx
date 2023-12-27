@@ -13,8 +13,8 @@ const Clock: React.FC<IconProps> = (props) => {
     >
       <path
         stroke="currentColor"
-        stroke-linejoin="round"
-        stroke-width="1.2"
+        strokeLinejoin="round"
+        strokeWidth="1.2"
         d="M10 6v4l3.276 3.276M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
       />
     </svg>
