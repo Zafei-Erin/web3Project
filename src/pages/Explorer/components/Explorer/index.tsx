@@ -1,10 +1,10 @@
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 
-import EtherInfoBox from "./components/EtherInfoBox";
-import { LatestBlocks } from "./components/LatestBlocks";
-import { LatestTxns } from "./components/LatestTxns";
-import SearchSection from "./components/SearchSection";
+import EtherInfoBox from "./EtherInfoBox";
+import { LatestBlocks } from "./LatestBlocks";
+import { LatestTxns } from "./LatestTxns";
+import SearchSection from "./SearchSection";
 import { getLatestBlocks } from "~/api/explorer/getEthPrice";
 
 export const Explorer = () => {

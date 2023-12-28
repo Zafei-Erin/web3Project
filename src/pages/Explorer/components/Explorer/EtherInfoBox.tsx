@@ -9,19 +9,19 @@ type InfoBoxType = {
   blockNumber: number | undefined;
 };
 
+export const formatPrice = (
+  price: string,
+  option?: Intl.NumberFormatOptions
+): string => {
+  return parseFloat(price).toLocaleString(undefined, option);
+};
+
 const EtherInfoBox: React.FC<InfoBoxType> = ({ blockNumber }) => {
   const [etherPrice, setEtherPrice] = useState<EthPriceType>();
 
   const init = async () => {
     const price = await getEthPrice();
     setEtherPrice(price);
-  };
-
-  const formatPrice = (
-    price: string,
-    option?: Intl.NumberFormatOptions
-  ): string => {
-    return parseFloat(price).toLocaleString(undefined, option);
   };
 
   // update on every refresh
