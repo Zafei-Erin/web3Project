@@ -6,6 +6,7 @@ import ExpolrerIndexPage from "./pages/Explorer";
 import { AccountPage } from "./pages/Explorer/components/AccountPage";
 import { Explorer } from "./pages/Explorer/components/Explorer";
 import Swap from "./pages/Swap";
+import { BlockPage } from "./pages/Explorer/components/BlockPage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="explorer/*" element={<ExpolrerIndexPage />}>
             <Route index element={<Explorer />} />
             <Route path="account/:address" element={<AccountPage />} />
+            <Route path="block/:blockId" element={<BlockPage />} />
             <Route path="*" element={<Explorer />} />
           </Route>
 

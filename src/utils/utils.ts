@@ -1,6 +1,11 @@
-export const calculateTime = (dateTime: string) => {
+export const calculateTime = (dateTime: string | number) => {
   const nowTime = new Date().getTime();
-  const time = parseInt(dateTime) * 1000;
+  let time: number;
+  if (typeof dateTime === "string") {
+    time = parseInt(dateTime) * 1000;
+  } else {
+    time = dateTime * 1000;
+  }
   let diff = Math.floor((nowTime - time) / 1000);
   if (diff < 60) return `${diff} ${diff <= 1 ? "sec" : "secs"}  ago`;
   diff = Math.floor(diff / 60);

@@ -12,10 +12,6 @@ export const getAccountBalance = async (address: string): Promise<string> => {
   return data.result;
 };
 
-export type TxnReqType = {
-  address: string;
-  offset: number;
-};
 export const getAccountTxns = async (address: string, offset: number) => {
   const url = `https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=${offset}&sort=desc&apikey=${ES_API_KEY}`;
 
