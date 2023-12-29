@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getAccountTxns } from "~/api/explorer/getAccountInfo";
+import { getAccountInternalTxns } from "~/api/explorer/getAccountInfo";
 import { formatPrice } from "../Explorer/EtherInfoBox";
 import { calculateTime } from "~/utils";
 
@@ -18,14 +18,14 @@ export type TxnType = {
 };
 
 const gridTemplateColumns =
-  "minmax(10rem, 1fr) minmax(6rem, 1fr) minmax(4rem, 1fr) minmax(4rem, 7rem) minmax(9rem, 1fr) minmax(9rem, 1fr) minmax(6rem, 1fr) minmax(6rem, 1fr)";
+  "minmax(10rem, 1fr) minmax(6rem, 1fr) minmax(6rem, 1fr) minmax(9rem, 1fr) minmax(9rem, 1fr) minmax(7rem, 1fr)";
 
-export const TxnTable: React.FC = () => {
+export const InternalTxnTable: React.FC = () => {
   const { address } = useParams();
   const [data, setData] = useState<TxnType[]>();
 
   const init = async (address: string) => {
-    const resp = await getAccountTxns(address, 15);
+    const resp = await getAccountInternalTxns(address, 15);
     console.log(resp);
     setData(resp);
   };
@@ -49,26 +49,18 @@ export const TxnTable: React.FC = () => {
               gridTemplateColumns: gridTemplateColumns,
             }}
           >
-            <th className="">Transaction Hash</th>
-            <th className="">Method</th>
+            <th className="">Parent Txn Hash</th>
             <th className="">Block</th>
             <th className="">Age</th>
             <th className="">From</th>
             <th className="">To</th>
             <th className="">Value</th>
-            <th className="">Txn Fee</th>
           </tr>
         </thead>
         <tbody className=" divide-y">
           {data &&
             data.length > 0 &&
             data.map((txn, index) => {
-              const txnFee = BigInt(
-                parseFloat(txn.gasPrice) * parseFloat(txn.gasUsed)
-              );
-              const txnFeeFormatted = ethers.utils
-                .formatEther(txnFee)
-                .slice(0, 10);
               return (
                 <tr
                   key={index}
@@ -81,11 +73,6 @@ export const TxnTable: React.FC = () => {
                     <Link to={`/explorer/transaction/${txn.hash}`}>
                       {txn.hash.slice(0, 18)}...
                     </Link>
-                  </td>
-                  <td className=" w-full flex justify-center">
-                    <div className="w-fit bg-gray-50 border px-4 py-1 rounded-lg text-xs">
-                      {txn.methodId === "0x" ? "Transfer" : txn.methodId}
-                    </div>
                   </td>
                   <td className="text-sky-600 hover:text-sky-700 text-sm">
                     <Link to={`/explorer/block/${txn.blockNumber}`}>
@@ -109,7 +96,6 @@ export const TxnTable: React.FC = () => {
                     })}{" "}
                     ETH
                   </td>
-                  <td className="text-xs text-gray-500">{txnFeeFormatted}</td>
                 </tr>
               );
             })}

@@ -5,6 +5,7 @@ import { getAccountBalance } from "~/api/explorer/getAccountInfo";
 import { getEthPrice } from "~/api/explorer/getEthPrice";
 import { formatPrice } from "../Explorer/EtherInfoBox";
 import { TxnTable } from "./TxnTable";
+import { InternalTxnTable } from "./InternalTxnTable";
 
 type Tab = {
   type: string;
@@ -16,8 +17,6 @@ const tabs: Tab[] = [
   { type: "Internal", title: "Internal Transactions" },
   { type: "Token", title: "Token Transfers (ERC-20)" },
   { type: "NFT", title: "NFT Transafers" },
-  { type: "Blocks", title: "Produced Blocks" },
-  { type: "Profolio", title: "Multichain Profolio" },
 ];
 
 export const AccountPage = () => {
@@ -32,7 +31,6 @@ export const AccountPage = () => {
 
     return formatPrice(float.toString(), {
       maximumFractionDigits: 2,
-      maximumSignificantDigits: 2,
     });
   }, [etherPrice, accountBalance]);
 
@@ -48,7 +46,9 @@ export const AccountPage = () => {
         maximumFractionDigits: 2,
       });
 
-      setEtherPrice(priceFormatted);
+      if (priceFormatted !== "NaN") {
+        setEtherPrice(priceFormatted);
+      }
     }
 
     if (address) {
@@ -71,6 +71,17 @@ export const AccountPage = () => {
       {title}
     </button>
   ));
+
+  const table = () => {
+    switch (selectedTab) {
+      case tabs[0].type:
+        return <TxnTable />;
+      case tabs[1].type:
+        return <InternalTxnTable />;
+      default:
+        break;
+    }
+  };
 
   return (
     <div className="w-full bg-gray-100 border-t">
@@ -107,7 +118,7 @@ export const AccountPage = () => {
           {tabList}
         </div>
 
-        <TxnTable />
+        {table()}
       </div>
     </div>
   );

@@ -39,16 +39,14 @@ export const getLatestBlocks = async () => {
 
     // LAST FINALIZED BLOCK
     const blockNumber = block.number;
-    // Latest Transactions
-    const txns = block.transactions.slice(0, DISPLAYNUMBER);
+    // Gas Price
+    const gasPriceBigNum = await provider.getGasPrice();
+    const gasPrice = ethers.utils.formatUnits(gasPriceBigNum);
     // Top 10 Blocks Numbers
     const blockNumberArray: number[] = [];
     for (let i = 0; i < DISPLAYNUMBER; i++) {
       blockNumberArray.push(blockNumber - i);
     }
-    // Gas Price
-    const gasPriceBigNum = await provider.getGasPrice();
-    const gasPrice = ethers.utils.formatUnits(gasPriceBigNum);
     // Blocks details
     const blocksDetails: ethers.providers.Block[] = [];
     const result = Promise.all(
@@ -57,9 +55,34 @@ export const getLatestBlocks = async () => {
         blocksDetails.push(blockData);
       })
     ).then(() => {
-      return { blockNumber, txns, blocksDetails, gasPrice };
+      return { blockNumber, gasPrice, blocksDetails };
     });
 
+    return result;
+  } catch (error) {
+    console.log("fail to get latest blocks", error);
+  }
+};
+
+export const getLatestTransactions = async () => {
+  const provider = new ethers.providers.JsonRpcProvider(
+    `https://mainnet.infura.io/v3/${INFURA_API_KEY}`
+  );
+
+  try {
+    const currentBlockNumber = await provider.getBlockNumber();
+    const block = await provider.getBlock(currentBlockNumber);
+    // Latest Transactions
+    const txns = block.transactions.slice(0, DISPLAYNUMBER);
+    const txnsDetails: ethers.providers.TransactionReceipt[] = [];
+    const result = Promise.all(
+      txns.map(async (txn) => {
+        const txnReceipt = await provider.getTransactionReceipt(txn);
+        txnsDetails.push(txnReceipt);
+      })
+    ).then(() => {
+      return txnsDetails;
+    });
     return result;
   } catch (error) {
     console.log("fail to get latest blocks", error);
