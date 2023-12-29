@@ -61,26 +61,26 @@ const EtherInfoBox: React.FC<InfoBoxType> = ({ blockNumber }) => {
           <MarketCapIcon className="w-7 h-7" />
           <div>
             <p className="text-xs text-gray-500">MARKET CAP</p>
-            123
+            <p className="h-6">123</p>
           </div>
         </div>
       </div>
       <div className="divide-y">
-        {/* transactions */}
-        <div className="flex gap-2 p-4 items-center justify-start">
-          <TransactionIcon className="w-7 h-7" />
-          <div>
-            <p className="text-xs text-gray-500">TRANSACTIONS</p>
-            <p>132</p>
-          </div>
-        </div>
-
         {/* last block */}
         <div className="p-4 flex gap-2 items-center justify-start">
           <Clock className="w-7 h-7" />
           <div>
             <p className="text-xs text-gray-500">LATEST BLOCK</p>
-            <p>{blockNumber}</p>
+            <p className="h-6">{blockNumber}</p>
+          </div>
+        </div>
+
+        {/* transactions */}
+        <div className="flex gap-2 p-4 items-center justify-start">
+          <TransactionIcon className="w-7 h-7" />
+          <div>
+            <p className="text-xs text-gray-500">TRANSACTIONS</p>
+            <p className="h-6">132</p>
           </div>
         </div>
       </div>
