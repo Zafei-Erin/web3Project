@@ -6,6 +6,8 @@ import { getEthPrice } from "~/api/explorer/getEthPrice";
 import { formatPrice } from "../Explorer/EtherInfoBox";
 import { TxnTable } from "./TxnTable";
 import { InternalTxnTable } from "./InternalTxnTable";
+import { Erc20TransferTable } from "./Erc20TransferTable";
+import { NFTTransferTable } from "./NFTTransferTable";
 
 type Tab = {
   type: string;
@@ -78,6 +80,10 @@ export const AccountPage = () => {
         return <TxnTable />;
       case tabs[1].type:
         return <InternalTxnTable />;
+      case tabs[2].type:
+        return <Erc20TransferTable />;
+      case tabs[3].type:
+        return <NFTTransferTable />;
       default:
         break;
     }

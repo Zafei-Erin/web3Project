@@ -26,7 +26,7 @@ export const getAccountTxns = async (address: string, offset: number) => {
     throw new Error("fail to fetch account transactions");
   }
 
-  return data.result.slice(0, 15);
+  return data.result;
 };
 
 export const getAccountInternalTxns = async (
@@ -34,13 +34,57 @@ export const getAccountInternalTxns = async (
   offset: number
 ) => {
   const url = `https://api.etherscan.io/api?module=account&action=txlistinternal&address=${address}&startblock=0&endblock=999999999&page=1&offset=${offset}&sort=desc&apikey=${ES_API_KEY}`;
-
   const resp = await fetch(url);
   const data = await resp.json();
 
   if (!resp.ok) {
-    throw new Error("fail to fetch account transactions");
+    throw new Error("fail to fetch account internal transactions");
   }
 
-  return data.result.slice(0, 15);
+  return data.result;
+};
+
+export const getAccountERC20TokenTransfer = async (
+  address: string,
+  offset: number
+) => {
+  const url = `https://api.etherscan.io/api?module=account&action=tokentx&address=${address}&page=1&offset=${offset}&startblock=0&endblock=27025780&sort=desc&apikey=${ES_API_KEY}`;
+  const resp = await fetch(url);
+  const data = await resp.json();
+
+  if (!resp.ok) {
+    throw new Error("fail to fetch account token transfers");
+  }
+
+  return data.result;
+};
+
+export const getAccountNFTTokenTransfer = async (
+  address: string,
+  offset: number
+) => {
+  const url = `https://api.etherscan.io/api?module=account&action=tokennfttx&address=${address}&page=1&offset=${offset}&startblock=0&endblock=999999999&sort=desc&apikey=${ES_API_KEY}`;
+  const resp = await fetch(url);
+  const data = await resp.json();
+
+  if (!resp.ok) {
+    throw new Error("fail to fetch account token transfers");
+  }
+
+  return data.result;
+};
+
+export const getAccountERC1155TokenTransfer = async (
+  address: string,
+  offset: number
+) => {
+  const url = `https://api.etherscan.io/api?module=account&action=token1155tx&address=${address}&page=1&offset=${offset}&startblock=0&endblock=99999999&sort=desc&apikey=${ES_API_KEY}`;
+  const resp = await fetch(url);
+  const data = await resp.json();
+
+  if (!resp.ok) {
+    throw new Error("fail to fetch account token transfers");
+  }
+
+  return data.result;
 };

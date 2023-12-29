@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { getAccountTxns } from "~/api/explorer/getAccountInfo";
 import { formatPrice } from "../Explorer/EtherInfoBox";
 import { calculateTime } from "~/utils";
+import { Loader } from "~/pages/Swap/components";
 
 export type TxnType = {
   hash: string;
@@ -36,10 +37,20 @@ export const TxnTable: React.FC = () => {
     }
   }, [address]);
 
+  if (data == undefined) {
+    return (
+      <div className="border rounded-xl h-[32rem] w-full break-normal bg-white flex items-center justify-center">
+        <Loader className="w-20 h-20" />
+      </div>
+    );
+  }
+
   return (
     <div className="border rounded-xl h-full w-full break-normal bg-white p-4 overflow-x-auto overflow-y-auto">
       <p className="mb-6 text-sm">
-        Latest 25 from a total of 17,512 transactions
+        {`Latest ${
+          data && (data?.length > 15 ? "15" : data.length)
+        } transactions`}
       </p>
       <table className="w-full border-collapse text-xs ">
         <thead>

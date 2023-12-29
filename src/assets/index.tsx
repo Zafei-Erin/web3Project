@@ -10,4 +10,4 @@ export * from "./SignInIcon";
 export * from "./SwapIcon";
 export * from "./TransactionIcon";
 export * from "./types";
-
+export * from "./NFTIcon";

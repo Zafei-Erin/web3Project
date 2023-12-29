@@ -1,29 +1,32 @@
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getAccountInternalTxns } from "~/api/explorer/getAccountInfo";
+import { getAccountERC20TokenTransfer } from "~/api/explorer/getAccountInfo";
 import { formatPrice } from "../Explorer/EtherInfoBox";
 import { calculateTime } from "~/utils";
 import { Loader } from "~/pages/Swap/components";
 
-type InternalTxnType = {
+type Erc20TransferType = {
   hash: string;
+  methodId: string;
   timeStamp: string;
   blockNumber: string;
   from: string;
   to: string;
   value: string;
+  tokenSymbol: string;
+  tokenDecimal: string;
 };
 
 const gridTemplateColumns =
-  "minmax(10rem, 1fr) minmax(6rem, 1fr) minmax(6rem, 1fr) minmax(9rem, 1fr) minmax(9rem, 1fr) minmax(7rem, 1fr)";
+  "minmax(10rem, 1fr) minmax(6rem, 1fr) minmax(9rem, 1fr) minmax(9rem, 1fr) minmax(7rem, 1fr) minmax(7rem, 1fr)";
 
-export const InternalTxnTable: React.FC = () => {
+export const Erc20TransferTable: React.FC = () => {
   const { address } = useParams();
-  const [data, setData] = useState<InternalTxnType[]>();
+  const [data, setData] = useState<Erc20TransferType[]>();
 
   const init = async (address: string) => {
-    const resp = await getAccountInternalTxns(address, 15);
+    const resp = await getAccountERC20TokenTransfer(address, 15);
     console.log(resp);
     setData(resp);
   };
@@ -57,12 +60,12 @@ export const InternalTxnTable: React.FC = () => {
               gridTemplateColumns: gridTemplateColumns,
             }}
           >
-            <th className="">Parent Txn Hash</th>
-            <th className="">Block</th>
+            <th className="">Txn Hash</th>
             <th className="">Age</th>
             <th className="">From</th>
             <th className="">To</th>
             <th className="">Value</th>
+            <th className="">Token</th>
           </tr>
         </thead>
         <tbody className=" divide-y">
@@ -82,11 +85,6 @@ export const InternalTxnTable: React.FC = () => {
                       {txn.hash.slice(0, 18)}...
                     </Link>
                   </td>
-                  <td className="text-sky-600 hover:text-sky-700 text-sm">
-                    <Link to={`/explorer/block/${txn.blockNumber}`}>
-                      {txn.blockNumber}
-                    </Link>
-                  </td>
                   <td className="">{calculateTime(txn.timeStamp)}</td>
                   <td className="text-sky-600 hover:text-sky-700 text-sm">
                     <Link to={`/explorer/account/${txn.from}`}>
@@ -99,11 +97,14 @@ export const InternalTxnTable: React.FC = () => {
                     </Link>
                   </td>
                   <td>
-                    {formatPrice(ethers.utils.formatEther(txn.value), {
-                      maximumFractionDigits: 8,
-                    })}{" "}
-                    ETH
+                    {formatPrice(
+                      ethers.utils.formatUnits(txn.value, txn.tokenDecimal),
+                      {
+                        maximumFractionDigits: 8,
+                      }
+                    )}{" "}
                   </td>
+                  <td>{txn.tokenSymbol}</td>
                 </tr>
               );
             })}
