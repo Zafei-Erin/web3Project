@@ -7,6 +7,7 @@ import { AccountPage } from "./pages/Explorer/components/AccountPage";
 import { Explorer } from "./pages/Explorer/components/Explorer";
 import Swap from "./pages/Swap";
 import { BlockPage } from "./pages/Explorer/components/BlockPage";
+import { TxPage } from "./pages/Explorer/components/TransctionPage";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route index element={<Explorer />} />
             <Route path="account/:address" element={<AccountPage />} />
             <Route path="block/:blockId" element={<BlockPage />} />
+            <Route path="tx/:txhash" element={<TxPage />} />
             <Route path="*" element={<Explorer />} />
           </Route>
 

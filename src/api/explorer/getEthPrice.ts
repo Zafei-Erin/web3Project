@@ -2,9 +2,13 @@ import { ethers } from "ethers";
 import { EthPriceType } from "~/types/types";
 import { provider } from "./InfuraProvider";
 
-export const endPoint = "https://api.etherscan.io/api";
+export type ESRespType = {
+  status: string;
+  message: string;
+  result: unknown;
+};
 
-type ResponseType = {
+type ESPriceRespType = {
   status: string;
   message: string;
   result: EthPriceType;
@@ -17,7 +21,7 @@ export const getEthPrice = async () => {
     `https://api.etherscan.io/api?module=stats&action=ethprice&apikey=${ES_API_KEY}`
   );
   const resp = await fetch(url);
-  const data: ResponseType = await resp.json();
+  const data: ESPriceRespType = await resp.json();
 
   if (!resp.ok) {
     throw new Error("Fail to fetch ether price");

@@ -30,7 +30,7 @@ export const LatestTxns: React.FC<LatestTxnsType> = ({ transaction }) => {
                   <div className="py-4 flex gap-2 items-center">
                     <BoxIcon className="w-12 h-12 p-3 text-gray-600 bg-gray-100 rounded-lg" />
                     <div>
-                      <Link to={`transaction/${txn}`}>
+                      <Link to={`tx/${txn.transactionHash}`}>
                         <p className="text-sky-600 hover:text-sky-700">
                           {txn.transactionHash.slice(0, 18)}...
                         </p>
