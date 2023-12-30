@@ -1,16 +1,9 @@
-import { ethers } from "ethers";
+import { provider } from "./InfuraProvider";
 
-const INFURA_API_KEy = import.meta.env.VITE_INFURA_API_KEY;
-
-export const getBlock = async (blockNumber: string) => {
-  const provider = new ethers.providers.JsonRpcProvider(
-    `https://mainnet.infura.io/v3/${INFURA_API_KEy}`
-  );
-
-  try {
-    const block = await provider.getBlock(parseInt(blockNumber));
-    return block;
-  } catch (error) {
-    console.log(error);
+export const getBlock = async (blockNumber: string | number) => {
+  if (typeof blockNumber === "string") {
+    blockNumber = parseInt(blockNumber);
   }
+  const block = await provider.getBlock(blockNumber);
+  return block;
 };
