@@ -210,8 +210,8 @@ export const TxPage = () => {
                   </div>
                 </div>
 
-                <div className="text-sm md:flex md:gap-6">
-                  <div className="font-semibold py-2">Input Data:</div>
+                <div className="text-sm md:flex md:gap-6 md:items-start md:py-2">
+                  <div className="font-semibold max-md:py-2">Input Data:</div>
                   <div className="border h-48 bg-gray-50 rounded-lg px-3 text-gray-500 overflow-x-auto overflow-y-auto text-wrap">
                     <div className="font-normal py-2">MethodID: {methodId}</div>
                     <div>
