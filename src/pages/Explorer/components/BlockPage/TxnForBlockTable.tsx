@@ -25,8 +25,6 @@ export const TxnForBlockTable = () => {
     setTxns(data);
   };
 
-  console.log((page - 1) * pageSize, page * pageSize);
-
   useEffect(() => {
     if (blockNumber) {
       init(parseInt(blockNumber));
@@ -41,22 +39,29 @@ export const TxnForBlockTable = () => {
   const PageTab: React.FC = () => {
     return (
       <div className="flex gap-1 items-center justify-end">
-        <div className="text-sm border rounded-lg py-1 px-1.5 text-sky-600 hover:border-sky-600 hover:bg-sky-600 hover:text-white transition">
+        <button
+          onClick={() => setPage(1)}
+          disabled={page === 1}
+          className={`text-sm border rounded-lg py-1 px-1.5 transition
+          ${
+            page === 1
+              ? "text-gray-500 bg-gray-50 border-gray-200"
+              : "text-sky-600 hover:text-white  hover:border-sky-600 hover:bg-sky-600"
+          }`}
+        >
           First
-        </div>
+        </button>
         <button
           onClick={() => {
             setPage((prev) => prev - 1);
           }}
           disabled={page === 1}
-          className={`border transition rounded-lg px-0.5 ${
-            page !== 1 && "hover:border-sky-600 hover:bg-sky-600"
-          } `}
+          className="border transition rounded-lg px-0.5 hover:border-sky-600 hover:bg-sky-600 disabled:border-gray-200 disabled:text-gray-500 disabled:bg-gray-50"
         >
           <ArrowDown
-            className={`${
-              page !== 1 && "hover:text-white "
-            }transition rotate-90 w-[1.8rem] h-[1.8rem] py-[0.3rem] px-1 stroke-2 text-sky-600`}
+            className={`transition rotate-90 w-[1.8rem] h-[1.8rem] py-[0.3rem] px-1 stroke-2 ${
+              page === 1 ? "text-gray-500" : "text-sky-600 hover:text-white"
+            } `}
           />
         </button>
         <div className="border rounded-lg bg-gray-50 text-gray-500 py-1 px-2 text-sm">
@@ -67,14 +72,29 @@ export const TxnForBlockTable = () => {
             setPage((prev) => prev + 1);
           }}
           disabled={page === maxPage}
-          className="border transition rounded-lg px-0.5 hover:border-sky-600 hover:bg-sky-600"
+          className="border transition rounded-lg px-0.5 hover:border-sky-600 hover:bg-sky-600 disabled:border-gray-200 disabled:text-gray-500 disabled:bg-gray-50"
         >
-          <ArrowDown className="hover:text-white transition -rotate-90 w-[1.8rem] h-[1.8rem] py-[0.3rem] px-1 stroke-2 text-sky-600" />
+          <ArrowDown
+            className={`transition -rotate-90 w-[1.8rem] h-[1.8rem] py-[0.3rem] px-1 stroke-2 ${
+              page === maxPage
+                ? "text-gray-500"
+                : "text-sky-600 hover:text-white"
+            } `}
+          />
         </button>
 
-        <div className="text-sm border rounded-lg py-1 px-1.5 text-sky-600 hover:border-sky-600 hover:bg-sky-600 hover:text-white transition">
+        <button
+          onClick={() => setPage(maxPage || 1)}
+          disabled={page === maxPage}
+          className={`text-sm border rounded-lg py-1 px-1.5 transition
+          ${
+            page === maxPage
+              ? "text-gray-500 bg-gray-50 border-gray-200"
+              : "text-sky-600 hover:text-white  hover:border-sky-600 hover:bg-sky-600"
+          }`}
+        >
           Last
-        </div>
+        </button>
       </div>
     );
   };
@@ -110,7 +130,12 @@ export const TxnForBlockTable = () => {
               {txns && txns.length > 0 && (
                 <div>
                   {/* tab */}
-                  <PageTab />
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm">
+                      A total of {txns.length} internal transactions found
+                    </p>
+                    <PageTab />
+                  </div>
                   <table className="w-full border-collapse text-xs ">
                     <thead>
                       <tr
@@ -184,40 +209,21 @@ export const TxnForBlockTable = () => {
                   </table>
 
                   <div className="flex gap-1 items-center justify-between">
-                    <div className=" flex items-center gap-2">
-                      <div className=" text-sm text-gray-500">Show rows:</div>
-                      <div className="relative">
-                        <select className="border py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
-                          <option
-                            onSelect={() => {
-                              setPageSize(50);
-                            }}
-                          >
-                            50
-                          </option>
-                          <option
-                            onSelect={() => {
-                              setPageSize(10);
-                            }}
-                          >
-                            10
-                          </option>
-                          <option
-                            onSelect={() => {
-                              setPageSize(20);
-                            }}
-                          >
-                            20
-                          </option>
-                          <option
-                            onSelect={() => {
-                              setPageSize(100);
-                            }}
-                          >
-                            100
-                          </option>
-                        </select>
+                    <div className=" flex items-center justify-start gap-2">
+                      <div className=" text-sm text-gray-500 text-nowrap">
+                        Show rows:
                       </div>
+                      <select
+                        onChange={(e) => {
+                          setPageSize(parseInt(e.target.value));
+                        }}
+                        className="border py-1 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
+                      >
+                        <option value={50}>50</option>
+                        <option value={10}>10</option>
+                        <option value={20}>20</option>
+                        <option value={100}>100</option>
+                      </select>
                     </div>
                     <PageTab />
                   </div>
