@@ -16,7 +16,7 @@ type InternalTxnType = {
 };
 
 const gridTemplateColumns =
-  "minmax(10rem, 1fr) minmax(6rem, 1fr) minmax(6rem, 1fr) minmax(9rem, 1fr) minmax(9rem, 1fr) minmax(7rem, 1fr)";
+  "minmax(10rem, 1fr) minmax(6rem, 8rem) minmax(6rem, 8rem) minmax(9rem, 1fr) minmax(9rem, 1fr) minmax(7rem, 1fr)";
 
 export const InternalTxnTable: React.FC = () => {
   const { address } = useParams();
@@ -57,12 +57,12 @@ export const InternalTxnTable: React.FC = () => {
               gridTemplateColumns: gridTemplateColumns,
             }}
           >
-            <th className="">Parent Txn Hash</th>
-            <th className="">Block</th>
-            <th className="">Age</th>
-            <th className="">From</th>
-            <th className="">To</th>
-            <th className="">Value</th>
+            <th className="text-start">Parent Txn Hash</th>
+            <th className="text-start">Block</th>
+            <th className="text-start">Age</th>
+            <th className="text-start">From</th>
+            <th className="text-start">To</th>
+            <th className="text-start">Value</th>
           </tr>
         </thead>
         <tbody className=" divide-y">
@@ -72,7 +72,7 @@ export const InternalTxnTable: React.FC = () => {
               return (
                 <tr
                   key={index}
-                  className="grid text-center py-3 px-3 gap-3 hover:bg-gray-100 text-sm text-nowrap"
+                  className="grid text-start py-3 px-4 gap-4 hover:bg-gray-100 text-sm text-nowrap"
                   style={{
                     gridTemplateColumns: gridTemplateColumns,
                   }}

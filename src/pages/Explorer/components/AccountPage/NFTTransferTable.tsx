@@ -84,12 +84,12 @@ export const NFTTransferTable: React.FC = () => {
               gridTemplateColumns: gridTemplateColumns,
             }}
           >
-            <th className="">Txn Hash</th>
-            <th className="">Age</th>
-            <th className="">From</th>
-            <th className="">To</th>
-            <th className="">Type</th>
-            <th className="">Item</th>
+            <th className="text-start">Txn Hash</th>
+            <th className="text-start">Age</th>
+            <th className="text-start">From</th>
+            <th className="text-start">To</th>
+            <th className="text-start">Type</th>
+            <th className="text-start">Item</th>
           </tr>
         </thead>
         <tbody className=" divide-y">
@@ -99,7 +99,7 @@ export const NFTTransferTable: React.FC = () => {
               return (
                 <tr
                   key={index}
-                  className="grid text-center py-3 px-3 gap-3 hover:bg-gray-100 text-sm text-nowrap"
+                  className="grid py-3 px-4 gap-4 hover:bg-gray-100 text-start text-sm text-nowrap"
                   style={{
                     gridTemplateColumns: gridTemplateColumns,
                   }}
@@ -120,7 +120,7 @@ export const NFTTransferTable: React.FC = () => {
                       {txn.to.slice(0, 8)}...{txn.to.slice(34)}
                     </Link>
                   </td>
-                  <td className="flex items-center justify-center">
+                  <td className="flex items-center justify-start">
                     <div className="border px-2 py-1 rounded-full text-center text-xs">
                       {txn.type}
                     </div>

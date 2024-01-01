@@ -60,12 +60,12 @@ export const Erc20TransferTable: React.FC = () => {
               gridTemplateColumns: gridTemplateColumns,
             }}
           >
-            <th className="">Txn Hash</th>
-            <th className="">Age</th>
-            <th className="">From</th>
-            <th className="">To</th>
-            <th className="">Value</th>
-            <th className="">Token</th>
+            <th className="text-start">Txn Hash</th>
+            <th className="text-start">Age</th>
+            <th className="text-start">From</th>
+            <th className="text-start">To</th>
+            <th className="text-start">Value</th>
+            <th className="text-start">Token</th>
           </tr>
         </thead>
         <tbody className=" divide-y">
@@ -75,7 +75,7 @@ export const Erc20TransferTable: React.FC = () => {
               return (
                 <tr
                   key={index}
-                  className="grid text-center py-3 px-3 gap-3 hover:bg-gray-100 text-sm text-nowrap"
+                  className="grid py-3 px-4 gap-4 hover:bg-gray-100 text-start text-sm text-nowrap"
                   style={{
                     gridTemplateColumns: gridTemplateColumns,
                   }}

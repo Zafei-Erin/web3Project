@@ -19,7 +19,7 @@ export type TxnType = {
 };
 
 const gridTemplateColumns =
-  "minmax(10rem, 1fr) minmax(6rem, 1fr) minmax(4rem, 1fr) minmax(4rem, 7rem) minmax(9rem, 1fr) minmax(9rem, 1fr) minmax(6rem, 1fr) minmax(6rem, 1fr)";
+  "minmax(11rem, 1fr) minmax(5rem, 1fr) minmax(4rem, 1fr) minmax(5rem, 7rem) minmax(9rem, 1fr) minmax(9rem, 1fr) minmax(7rem, 1fr) minmax(6rem, 1fr)";
 
 export const TxnTable: React.FC = () => {
   const { address } = useParams();
@@ -60,14 +60,14 @@ export const TxnTable: React.FC = () => {
               gridTemplateColumns: gridTemplateColumns,
             }}
           >
-            <th className="">Transaction Hash</th>
-            <th className="">Method</th>
-            <th className="">Block</th>
-            <th className="">Age</th>
-            <th className="">From</th>
-            <th className="">To</th>
-            <th className="">Value</th>
-            <th className="">Txn Fee</th>
+            <th className="text-start">Transaction Hash</th>
+            <th className="text-start">Method</th>
+            <th className="text-start">Block</th>
+            <th className="text-start">Age</th>
+            <th className="text-start">From</th>
+            <th className="text-start">To</th>
+            <th className="text-start">Value</th>
+            <th className="text-start">Txn Fee</th>
           </tr>
         </thead>
         <tbody className=" divide-y">
@@ -83,7 +83,7 @@ export const TxnTable: React.FC = () => {
               return (
                 <tr
                   key={index}
-                  className="grid text-center py-3 px-3 gap-3 hover:bg-gray-100 text-sm text-nowrap"
+                  className="grid py-3 px-4 gap-4 hover:bg-gray-100 text-sm text-nowrap text-start"
                   style={{
                     gridTemplateColumns: gridTemplateColumns,
                   }}
@@ -93,7 +93,7 @@ export const TxnTable: React.FC = () => {
                       {txn.hash.slice(0, 18)}...
                     </Link>
                   </td>
-                  <td className=" w-full flex justify-center">
+                  <td className=" w-full flex justify-start">
                     <div className="w-fit bg-gray-50 border px-4 py-1 rounded-lg text-xs">
                       {txn.methodId === "0x" ? "Transfer" : txn.methodId}
                     </div>
