@@ -37,20 +37,18 @@ const ConnectWallet = () => {
   };
 
   return (
-    <div>
-      <button
-        onClick={() => {
-          if (!accountAddr) {
-            connect();
-          }
-        }}
-        className=" p-2 px-5 rounded-full font-semibold transition bg-violet-200 text-violet-600 hover:cursor-pointer hover:bg-violet-400 hover:text-white"
-      >
-        {accountAddr == "" || accountAddr == undefined
-          ? "Connect Wallet"
-          : accountAddr?.slice(0, 4) + "..." + accountAddr?.slice(38)}
-      </button>
-    </div>
+    <button
+      onClick={() => {
+        if (!accountAddr) {
+          connect();
+        }
+      }}
+      className="p-2 rounded-full text-nowrap font-semibold transition bg-violet-200 text-violet-600 hover:cursor-pointer hover:bg-violet-400 hover:text-white"
+    >
+      {accountAddr == "" || accountAddr == undefined
+        ? "Connect Wallet"
+        : accountAddr?.slice(0, 4) + "..." + accountAddr?.slice(38)}
+    </button>
   );
 };
 

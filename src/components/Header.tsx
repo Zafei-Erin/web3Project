@@ -5,8 +5,8 @@ import ConnectWallet from "./ConnectWallet";
 const Header = () => {
   return (
     <div>
-      <header className=" h-16 items-center flex justify-between px-6 lg:max-w-[90%] mx-auto">
-        <div className="flex items-center gap-6 py-2">
+      <header className="h-16 items-center flex justify-between gap-3 px-6 lg:max-w-[90%] mx-auto">
+        <div className="flex items-center gap-3 sm:gap-6 py-2">
           <Link to={"/"}>
             <LightLogo className="w-6 h-6 hover:text-amber-400 transition" />
           </Link>
@@ -21,9 +21,7 @@ const Header = () => {
             </div>
           </Link>
         </div>
-        <div className="flex items-center gap-5">
-          <ConnectWallet />
-        </div>
+        <ConnectWallet />
       </header>
       <Outlet />
     </div>
