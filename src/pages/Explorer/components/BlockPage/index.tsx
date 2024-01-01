@@ -120,7 +120,16 @@ export const BlockPage = () => {
                 <div className="font-semibold text-sm md:flex md:gap-6">
                   <div className=" py-2">Transactions:</div>
                   <span className="font-normal py-2">
-                    {block.transactions.length} transactions in this block
+                    <Link
+                      to={{
+                        pathname: "/explorer/txs",
+                        search: `?block=${block.number}`,
+                      }}
+                      className="text-sky-600 hover:text-sky-700"
+                    >
+                      {block.transactions.length} transactions
+                    </Link>{" "}
+                    in this block
                   </span>
                 </div>
                 <div className="font-semibold text-sm md:flex md:gap-6 md:items-center">

@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react";
-import { getEthPrice } from "~/api/explorer/getEthPrice";
+import { getEthPrice, getLatestBlockNumber } from "~/api/explorer/getEthPrice";
 import { EtherIcon, TransactionIcon } from "~/assets";
 import Clock from "~/assets/Clock";
 import MarketCapIcon from "~/assets/MarketCapIcon";
 import { EthPriceType } from "~/types/types";
-
-type InfoBoxType = {
-  blockNumber: number | undefined;
-};
 
 export const formatPrice = (
   price: string,
@@ -16,12 +12,14 @@ export const formatPrice = (
   return parseFloat(price).toLocaleString(undefined, option);
 };
 
-const EtherInfoBox: React.FC<InfoBoxType> = ({ blockNumber }) => {
+const EtherInfoBox: React.FC = () => {
   const [etherPrice, setEtherPrice] = useState<EthPriceType>();
-
+  const [blockNumber, setBlockNumber] = useState<number>();
   const init = async () => {
     const price = await getEthPrice();
     setEtherPrice(price);
+    const blockNumber = await getLatestBlockNumber();
+    setBlockNumber(blockNumber);
   };
 
   // update on every refresh

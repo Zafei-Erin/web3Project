@@ -37,16 +37,21 @@ export const getLatestBlockNumber = async () => {
   return blockNumber;
 };
 
+export const getGasPrice = async () => {
+  // Gas Price
+  const gasPriceBigNum = await provider.getGasPrice();
+  // const gasPrice = ethers.utils.formatUnits(gasPriceBigNum);
+  return gasPriceBigNum;
+};
+
 export const getLatestBlocks = async () => {
   const currentBlockNumber = await getLatestBlockNumber();
   const block = await provider.getBlock(currentBlockNumber);
 
   // LAST FINALIZED BLOCK
   const blockNumber = block.number;
-  // Gas Price
-  const gasPriceBigNum = await provider.getGasPrice();
-  const gasPrice = ethers.utils.formatUnits(gasPriceBigNum);
-  // Top 10 Blocks Numbers
+
+  // Top n Blocks Numbers
   const blockNumberArray: number[] = [];
   for (let i = 0; i < DISPLAYNUMBER; i++) {
     blockNumberArray.push(blockNumber - i);
@@ -59,20 +64,61 @@ export const getLatestBlocks = async () => {
       blocksDetails.push(blockData);
     })
   ).then(() => {
-    return { blockNumber, gasPrice, blocksDetails };
+    return blocksDetails;
   });
 
   return result;
 };
 
+export const getMoreBlocks = async (lastBlockNumber: number) => {
+  // Top n Blocks Numbers
+  const blockNumberArray: number[] = [];
+  for (let i = 0; i < DISPLAYNUMBER; i++) {
+    blockNumberArray.push(lastBlockNumber - i);
+  }
+  // Blocks details
+  const blocksDetails: ethers.providers.Block[] = [];
+  const result = Promise.all(
+    blockNumberArray.map(async (blockNumber) => {
+      const blockData = await provider.getBlock(blockNumber);
+      blocksDetails.push(blockData);
+    })
+  ).then(() => {
+    return blocksDetails;
+  });
+
+  return result;
+};
+
+let transactionArray: string[] = [];
+
 export const getLatestTransactions = async () => {
   const currentBlockNumber = await getLatestBlockNumber();
   const block = await provider.getBlock(currentBlockNumber);
   // Latest Transactions
-  const txns = block.transactions.slice(0, DISPLAYNUMBER);
+  transactionArray = block.transactions;
+  const txns = transactionArray.slice(0, DISPLAYNUMBER);
   const txnsDetails: ethers.providers.TransactionReceipt[] = [];
   const result = Promise.all(
     txns.map(async (txn) => {
+      const txnReceipt = await provider.getTransactionReceipt(txn);
+      txnsDetails.push(txnReceipt);
+    })
+  ).then(() => {
+    return txnsDetails;
+  });
+  return result;
+};
+
+export const getMoreTransactions = async (page: number) => {
+  const newTxns = transactionArray.slice(
+    DISPLAYNUMBER * page,
+    DISPLAYNUMBER * (page + 1)
+  );
+
+  const txnsDetails: ethers.providers.TransactionReceipt[] = [];
+  const result = Promise.all(
+    newTxns.map(async (txn) => {
       const txnReceipt = await provider.getTransactionReceipt(txn);
       txnsDetails.push(txnReceipt);
     })

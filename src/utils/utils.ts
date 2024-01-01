@@ -19,3 +19,11 @@ export const calculateTime = (dateTime: string | number) => {
   diff = Math.floor(diff / 365);
   return `${Math.floor(diff)} years ago`;
 };
+
+// export const formatDecimal = (num: string, decimal): string => {
+//   if (num.includes(".")) {
+//     const intPart = parseInt(num.split(".")[0]);
+//     const floatPart = num.split(".")[1].slice(0, decimal);
+//     return intPart.
+//   }
+// };

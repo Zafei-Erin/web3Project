@@ -11,3 +11,5 @@ export * from "./SwapIcon";
 export * from "./TransactionIcon";
 export * from "./types";
 export * from "./NFTIcon";
+export * from "./ArrowDown";
+export * from "./FromToIcon";

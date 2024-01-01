@@ -1,18 +1,35 @@
 import { ethers } from "ethers";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getLatestBlocks, getMoreBlocks } from "~/api/explorer/getEthPrice";
+import { ArrowDown } from "~/assets";
 import BoxIcon from "~/assets/BoxIcon";
 import { Loader } from "~/pages/Swap/components";
 
-type LatestBlockType = {
-  blocks: ethers.providers.Block[] | undefined;
-  gasPrice: string | undefined;
-};
+export const LatestBlocks: React.FC = () => {
+  const [blocks, setBlocks] = useState<ethers.providers.Block[]>([]);
+  const [lastBlockNumber, setLastBlockNumber] = useState<number>();
+  const [loadingMore, setLoadingMore] = useState(false);
 
-export const LatestBlocks: React.FC<LatestBlockType> = ({
-  blocks,
-  gasPrice,
-}) => {
-  
+  const initBlocks = async () => {
+    const blocksDetails = await getLatestBlocks();
+    setBlocks(blocksDetails);
+    setLastBlockNumber(blocksDetails[blocksDetails.length - 1].number);
+  };
+
+  useEffect(() => {
+    initBlocks();
+  }, []);
+
+  const fetchData = async () => {
+    setLoadingMore(true);
+    if (lastBlockNumber) {
+      const newBlocks = await getMoreBlocks(lastBlockNumber - 1);
+      setBlocks((prev) => [...prev, ...newBlocks]);
+    }
+    setLoadingMore(false);
+  };
+
   blocks?.sort((a, b) => {
     return b.timestamp - a.timestamp;
   });
@@ -20,20 +37,15 @@ export const LatestBlocks: React.FC<LatestBlockType> = ({
   return (
     <div className="border rounded-lg divide-y shadow-lg shadow-gray-100">
       <div className="text-sm font-semibold py-4 px-3">Lastest Blocks</div>
-      {!blocks ? (
+      {blocks.length === 0 ? (
         <div className="h-[20rem] flex items-center justify-center">
           <Loader className="w-20 h-20" />
         </div>
       ) : (
         <>
-          <div className="px-3 divide-y">
+          <div className="px-3 divide-y overflow-y-auto h-[20.2rem]">
             {blocks &&
-              gasPrice &&
               blocks.map((block, index) => {
-                // const blockReward = ethers.BigNumber.from(block.gasUsed)
-                //   .mul(gasPrice)
-                //   .toString();
-                //   const blockRewardFormatted = ethers.utils.formatUnits(blockReward, 18)
                 return (
                   <div
                     key={index}
@@ -66,17 +78,24 @@ export const LatestBlocks: React.FC<LatestBlockType> = ({
                         <div className="text-gray-400">in 12 secs</div>
                       </div>
                     </div>
-                    {/* <div className="border rounded-lg p-2 font-semibold text-xs">
-                  {blockRewardFormatted} Eth
-                </div> */}
                   </div>
                 );
               })}
           </div>
 
-          <div className="flex items-center hover:cursor-pointer hover:text-sky-700 justify-center rounded-b-lg py-4 font-semibold text-gray-500 bg-gray-50 text-xs">
-            VIEW ALL BLOCKS
-          </div>
+          <button
+            onClick={fetchData}
+            className="flex w-full items-center hover:cursor-pointer hover:text-sky-700 justify-center rounded-b-lg py-4 font-semibold text-gray-500 bg-gray-50 text-xs"
+          >
+            {loadingMore ? (
+              "LOADING..."
+            ) : (
+              <div className="flex items-center gap-2 justify-center">
+                "VIEW MORE BLOCKS"{" "}
+                <ArrowDown className="w-4 h-4 hover:stroke-sky-700 stroke-2" />
+              </div>
+            )}
+          </button>
         </>
       )}
     </div>

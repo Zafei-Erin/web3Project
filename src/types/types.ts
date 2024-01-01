@@ -3,6 +3,20 @@ export type EthPriceType = {
   ethbtc: string;
 };
 
+export type EthBlockWithTxnsType = Record<
+  | "blockNumber"
+  | "timeStamp"
+  | "hash"
+  | "from"
+  | "to"
+  | "value"
+  | "type"
+  | "gas"
+  | "gasUsed"
+  | "isError",
+  string
+>;
+
 export type BlockInfoType = {
   blockNumber: string;
   totalTransactions: string;

@@ -13,13 +13,13 @@ export const TxPage = () => {
     useState<ethers.providers.TransactionResponse>();
   const [txnReceipt, setTxnReceipt] =
     useState<ethers.providers.TransactionReceipt>();
-  const [ethPriceUsd, setEthPriceUsd] = useState("");
+  const [ethPriceUsd, setEthPriceUsd] = useState<number>(0);
 
   const init = async (txhash: string) => {
     const tx = await getTxn(txhash);
     const txnReceipt = await getTxnReceipt(txhash);
     const ethPrice = await getEthPrice();
-    setEthPriceUsd(ethPrice.ethusd);
+    setEthPriceUsd(parseInt(ethPrice.ethusd));
 
     if (tx !== null) {
       setTransaction(tx);
@@ -49,21 +49,20 @@ export const TxPage = () => {
   const gasPriceGwei = gasPrice && ethers.utils.formatUnits(gasPrice, 9);
   const gasPriceEth = gasPrice && ethers.utils.formatEther(gasPrice);
   const gasUsed = txnReceipt?.gasUsed;
+  let transactionFee: ethers.BigNumber;
   let transactionFeeEth;
   if (gasUsed && gasPrice) {
-    const transactionFee = txnReceipt.gasUsed.mul(gasPrice);
+    transactionFee = txnReceipt.gasUsed.mul(gasPrice);
     transactionFeeEth = ethers.utils.formatEther(transactionFee);
   }
   let txnFeeUsd;
   if (transactionFeeEth) {
-    txnFeeUsd = parseFloat(ethPriceUsd) * parseFloat(transactionFeeEth);
+    txnFeeUsd = ethPriceUsd * parseFloat(transactionFeeEth);
     txnFeeUsd = txnFeeUsd.toFixed(2);
   }
-  let valueUsd;
-  if (transaction?.value) {
-    valueUsd = transaction.value.toNumber() * parseFloat(ethPriceUsd);
-    valueUsd = valueUsd.toFixed(2);
-  }
+
+  const txnValueEth = ethers.utils.formatEther(transaction?.value || 0);
+  const txnValueUsd = parseFloat(txnValueEth) * ethPriceUsd;
 
   let gasUsedFormatted;
   let gasUsedPercentage;
@@ -88,7 +87,7 @@ export const TxPage = () => {
               <Loader className="w-16 h-16" />
             </div>
           ) : (
-            <div className="border bg-white rounded-lg p-4 space-y-4 text-nowrap">
+            <div className="border bg-white rounded-lg p-4 space-y-4 text-nowrap w-full overflow-x-auto">
               {/* first section */}
               <div className="space-y-2">
                 <div className="text-sm md:flex md:gap-6 md:items-center max-md:space-y-2">
@@ -153,8 +152,10 @@ export const TxPage = () => {
                 <div className="font-semibold text-sm md:flex md:gap-6">
                   <div className=" py-2">Value:</div>
                   <div className="font-normal py-2">
-                    {transaction.value.toNumber().toLocaleString()} ETH{" "}
-                    <span className="text-gray-500">(${valueUsd})</span>
+                    {txnValueEth} ETH{" "}
+                    <span className="text-gray-500">
+                      (${txnValueUsd.toFixed(2)})
+                    </span>
                   </div>
                 </div>
                 <div className="font-semibold text-sm md:flex md:gap-6">
