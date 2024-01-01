@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { getBlock } from "~/api/explorer/getBlockInfo";
 import { getLatestBlockNumber } from "~/api/explorer/getEthPrice";
 import { ChevronDownIcon } from "~/assets";
+import { Tooltip } from "~/components/Tooltip";
 import { Loader } from "~/pages/Swap/components";
 import { calculateTime } from "~/utils";
 
@@ -119,16 +120,20 @@ export const BlockPage = () => {
                 </div>
                 <div className="font-semibold text-sm md:flex md:gap-6">
                   <div className=" py-2">Transactions:</div>
-                  <span className="font-normal py-2">
-                    <Link
-                      to={{
-                        pathname: "/explorer/txs",
-                        search: `?block=${block.number}`,
-                      }}
-                      className="text-sky-600 hover:text-sky-700"
+                  <span className="font-normal py-2 flex items-center gap-1">
+                    <Tooltip
+                      content="click to view internal transactions"
                     >
-                      {block.transactions.length} transactions
-                    </Link>{" "}
+                      <Link
+                        to={{
+                          pathname: "/explorer/txs",
+                          search: `?block=${block.number}`,
+                        }}
+                        className="text-sky-600 hover:text-sky-700"
+                      >
+                        {block.transactions.length} transactions
+                      </Link>
+                    </Tooltip>{" "}
                     in this block
                   </span>
                 </div>
