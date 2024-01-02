@@ -90,7 +90,7 @@ export const AccountPage = () => {
   };
 
   return (
-    <div className="w-full bg-gray-100 border-t">
+    <div className="w-full bg-gray-100 border-t min-h-screen">
       <div className="px-3 sm:px-4 py-2 2xl:max-w-[80%] mx-auto space-y-3">
         {/* header */}
         <div className="max-sm:space-y-2 sm:flex border-b py-4 sm:items-center sm:justify-start sm:gap-2">

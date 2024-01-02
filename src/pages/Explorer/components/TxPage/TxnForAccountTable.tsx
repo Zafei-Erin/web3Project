@@ -73,7 +73,7 @@ export const TxnForAccountTable = () => {
 
   const PageTab: React.FC = () => {
     return (
-      <div className="flex gap-1 items-center justify-end">
+      <div className="flex gap-1 items-center">
         <button
           onClick={() => setPage(1)}
           disabled={page === 1}
@@ -135,7 +135,7 @@ export const TxnForAccountTable = () => {
   };
 
   return (
-    <div className="px-3 bg-gray-50 py-3 flex items-center justify-center">
+    <div className="px-3 bg-gray-50 py-3 min-h-screen flex items-center justify-center">
       <div className="w-full xl:w-[85%] space-y-4">
         {/* header */}
         <div>
@@ -163,9 +163,10 @@ export const TxnForAccountTable = () => {
               {txns && txns.length > 0 && (
                 <div>
                   {/* tab */}
-                  <div className="flex items-center justify-between">
+                  <div className="sm:flex items-center justify-between">
                     <p className="text-sm">
-                      A total of {txns.length} internal transactions found
+                      A total of {txns.length.toLocaleString()} internal
+                      transactions found
                     </p>
                     <PageTab />
                   </div>
@@ -275,8 +276,8 @@ export const TxnForAccountTable = () => {
                     </tbody>
                   </table>
 
-                  <div className="flex gap-1 items-center justify-between">
-                    <div className=" flex items-center justify-start gap-2">
+                  <div className="sm:flex space-y-2 items-center justify-between">
+                    <div className="flex items-center justify-start gap-2">
                       <div className=" text-sm text-gray-500 text-nowrap">
                         Show rows:
                       </div>
@@ -285,7 +286,7 @@ export const TxnForAccountTable = () => {
                         onChange={(e) => {
                           setPageSize(parseInt(e.target.value));
                         }}
-                        className="border py-1 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="border py-1 px-3 block w-fit border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
                       >
                         <option value={10}>10</option>
                         <option value={20}>25</option>
