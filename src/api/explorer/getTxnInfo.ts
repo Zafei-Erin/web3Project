@@ -19,8 +19,6 @@ export const getTxnStatus = async (txnHash: string) => {
   );
   const resp = await fetch(url);
   const data: ESRespType = await resp.json();
-  console.log("transaction status: ", data);
-
   if (!resp.ok) {
     throw new Error("Fail to fetch transaction status");
   }

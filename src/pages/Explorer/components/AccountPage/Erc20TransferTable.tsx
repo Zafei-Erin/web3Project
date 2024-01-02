@@ -27,7 +27,6 @@ export const Erc20TransferTable: React.FC = () => {
 
   const init = async (address: string) => {
     const resp = await getAccountERC20TokenTransfer(address, 15);
-    console.log(resp);
     setData(resp);
   };
 
@@ -81,7 +80,7 @@ export const Erc20TransferTable: React.FC = () => {
                   }}
                 >
                   <td className=" text-sky-600 hover:text-sky-700">
-                    <Link to={`/explorer/transaction/${txn.hash}`}>
+                    <Link to={`/explorer/tx/${txn.hash}`}>
                       {txn.hash.slice(0, 18)}...
                     </Link>
                   </td>

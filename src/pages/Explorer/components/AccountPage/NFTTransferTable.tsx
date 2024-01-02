@@ -36,8 +36,6 @@ export const NFTTransferTable: React.FC = () => {
       address,
       15
     );
-    console.log(erc1155Resp);
-
     const nftRespLabled = nftResp.map((resp) => {
       resp.type = "ERC-721";
       return resp;
@@ -51,7 +49,6 @@ export const NFTTransferTable: React.FC = () => {
     nftRespLabled.sort((a, b) => {
       return parseInt(b.timeStamp) - parseInt(a.timeStamp);
     });
-    // console.log(nftRespLabled);
     setData(nftRespLabled);
   };
 
@@ -105,7 +102,7 @@ export const NFTTransferTable: React.FC = () => {
                   }}
                 >
                   <td className=" text-sky-600 hover:text-sky-700">
-                    <Link to={`/explorer/transaction/${txn.hash}`}>
+                    <Link to={`/explorer/tx/${txn.hash}`}>
                       {txn.hash.slice(0, 18)}...
                     </Link>
                   </td>
@@ -125,7 +122,7 @@ export const NFTTransferTable: React.FC = () => {
                       {txn.type}
                     </div>
                   </td>
-                  <td className="w-full flex items-center justify-start gap-2">
+                  <td className="w-full flex items-center justify-start gap-2 overflow-hidden">
                     <NFTIcon className="flex-none w-9 h-9 border rounded-lg p-1 object-contain" />
                     <div className="">
                       <div className="text-start">

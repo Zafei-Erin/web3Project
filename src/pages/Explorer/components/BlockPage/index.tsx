@@ -121,9 +121,7 @@ export const BlockPage = () => {
                 <div className="font-semibold text-sm md:flex md:gap-6">
                   <div className=" py-2">Transactions:</div>
                   <span className="font-normal py-2 flex items-center gap-1">
-                    <Tooltip
-                      content="click to view internal transactions"
-                    >
+                    <Tooltip content="click to view internal transactions">
                       <Link
                         to={{
                           pathname: "/explorer/txs",
@@ -188,12 +186,12 @@ export const BlockPage = () => {
               {/* third section */}
               <div className="space-y-2">
                 <div className="font-semibold text-sm md:flex md:gap-6">
-                  <div className=" py-2">Hash:</div>
+                  <div className="py-2">Hash:</div>
                   <div className="font-normal py-2">{block.hash}</div>
                 </div>
                 <div className="font-semibold text-sm md:flex md:gap-6">
                   <div className=" py-2">Parent Hash:</div>
-                  <Link to={`/explorer/block/${block.parentHash}`}>
+                  <Link to={`/explorer/tx/${block.parentHash}`}>
                     <div className="font-normal py-2 text-sky-600 hover:text-sky-700 transition">
                       {block.parentHash}
                     </div>

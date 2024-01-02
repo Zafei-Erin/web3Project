@@ -78,7 +78,7 @@ export const LatestTxns: React.FC = () => {
                     </div>
                     <div className="flex gap-1">
                       to
-                      <Link to={`account/${txn.from}`}>
+                      <Link to={`account/${txn.to}`}>
                         <p className="text-sky-600 hover:text-sky-700">
                           {" "}
                           {txn.to.slice(0, 8)}...{txn.to.slice(34)}

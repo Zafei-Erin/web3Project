@@ -17,6 +17,19 @@ export type EthBlockWithTxnsType = Record<
   string
 >;
 
+export type EthAccountWithTxnsType = Record<
+  | "blockNumber"
+  | "timeStamp"
+  | "hash"
+  | "from"
+  | "to"
+  | "value"
+  | "gasUsed"
+  | "gasPrice"
+  | "methodId",
+  string
+>;
+
 export type BlockInfoType = {
   blockNumber: string;
   totalTransactions: string;

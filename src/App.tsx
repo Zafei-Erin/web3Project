@@ -4,11 +4,11 @@ import Header from "./components/Header";
 import { UserAccProvider } from "./context/userAddrProvider";
 import ExpolrerIndexPage from "./pages/Explorer";
 import { AccountPage } from "./pages/Explorer/components/AccountPage";
-import { Explorer } from "./pages/Explorer/components/Explorer";
-import Swap from "./pages/Swap";
 import { BlockPage } from "./pages/Explorer/components/BlockPage";
+import { Explorer } from "./pages/Explorer/components/Explorer";
 import { TxPage } from "./pages/Explorer/components/TxPage";
-import { TxnForBlockTable } from "./pages/Explorer/components/BlockPage/TxnForBlockTable";
+import { TxnRedirectPage } from "./pages/Explorer/components/TxPage/TxnRedirectPage";
+import Swap from "./pages/Swap";
 
 function App() {
   return (
@@ -22,7 +22,8 @@ function App() {
             <Route path="account/:address" element={<AccountPage />} />
             <Route path="block/:blockId" element={<BlockPage />} />
             <Route path="tx/:txhash" element={<TxPage />} />
-            <Route path="txs" element={<TxnForBlockTable />} />
+            {/* <Route path="txs" element={<TxnForBlockTable />} /> */}
+            <Route path="txs" element={<TxnRedirectPage />} />
             <Route path="*" element={<Explorer />} />
           </Route>
 

@@ -27,11 +27,12 @@ const customTheme: CustomFlowbiteTheme["tooltip"] = {
 };
 
 export const Tooltip: React.FC<TooltipProps> = (props) => {
+  const { className, ...rest } = props;
   return (
     <FTooltip
       theme={customTheme}
-      className="bg-gray-900/95 px-2 py-1 text-xs font-light"
-      {...props}
+      className={`bg-gray-900/95 px-2 py-1 text-xs font-light ${className}`}
+      {...rest}
     ></FTooltip>
   );
 };

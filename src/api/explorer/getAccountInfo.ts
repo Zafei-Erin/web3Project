@@ -12,7 +12,11 @@ export const getAccountBalance = async (address: string): Promise<string> => {
   return data.result;
 };
 
-export const getAccountTxns = async (address: string, offset: number) => {
+const MAXOFFSET = 10_000;
+export const getAccountTxns = async (address: string, offset?: number) => {
+  if (!offset) {
+    offset = MAXOFFSET;
+  }
   const url = `https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=${offset}&sort=desc&apikey=${ES_API_KEY}`;
 
   const resp = await fetch(url);

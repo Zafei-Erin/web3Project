@@ -13,3 +13,4 @@ export * from "./types";
 export * from "./NFTIcon";
 export * from "./ArrowDown";
 export * from "./FromToIcon";
+export * from "./ArrowWithBar";

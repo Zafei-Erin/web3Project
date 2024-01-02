@@ -36,8 +36,6 @@ app.get("/getlatesttxns", async (req, res) => {
         };
       })
     );
-    console.log(txns);
-
     return res.status(200).json(txns);
   } catch (e) {
     console.log(`Somthing went wrong ${e}`);

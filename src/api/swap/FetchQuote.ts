@@ -16,7 +16,6 @@ export const FetchQuote = async (params: ParamsType) => {
     headers: { "0x-api-key": API_KEY },
   });
   const swapQuoteJSON = await response.json();
-  console.log("Quote: ", swapQuoteJSON);
 
   if (!response.ok) {
     throw new Error("fail to fetch quotes");

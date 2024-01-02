@@ -131,7 +131,7 @@ export const TxPage = () => {
 
                 <div className="font-semibold text-sm md:flex md:gap-6 md:items-center">
                   <div className=" py-2">From:</div>
-                  <Link to={`/expolorer/account/${transaction.from}`}>
+                  <Link to={`/explorer/account/${transaction.from}`}>
                     <span className="font-normal py-2 text-sky-600 hover:text-sky-700 transition">
                       {transaction.from}
                     </span>
@@ -139,7 +139,7 @@ export const TxPage = () => {
                 </div>
                 <div className="font-semibold text-sm md:flex md:gap-6 md:items-center">
                   <div className=" py-2">Interacted With (To):</div>
-                  <Link to={`/expolorer/account/${transaction.to}`}>
+                  <Link to={`/explorer/account/${transaction.to}`}>
                     <span className="font-normal py-2 text-sky-600 hover:text-sky-700 transition">
                       {transaction.to}
                     </span>
