@@ -137,7 +137,7 @@ export const BlockPage = () => {
                 </div>
                 <div className="font-semibold text-sm md:flex md:gap-6 md:items-center">
                   <div className=" py-2">Fee Recipient:</div>
-                  <Link to={`/expolorer/account/${block.miner}`}>
+                  <Link to={`/explorer/account/${block.miner}`}>
                     <span className="font-normal py-2 text-sky-600 hover:text-sky-700 transition">
                       {block.miner}
                     </span>
@@ -191,11 +191,8 @@ export const BlockPage = () => {
                 </div>
                 <div className="font-semibold text-sm md:flex md:gap-6">
                   <div className=" py-2">Parent Hash:</div>
-                  <Link to={`/explorer/tx/${block.parentHash}`}>
-                    <div className="font-normal py-2 text-sky-600 hover:text-sky-700 transition">
-                      {block.parentHash}
-                    </div>
-                  </Link>
+
+                  <div className="font-normal py-2">{block.parentHash}</div>
                 </div>
                 <div className="font-semibold text-sm md:flex md:gap-6">
                   <div className=" py-2">Nonce:</div>

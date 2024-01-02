@@ -14,19 +14,26 @@ export const TxPage = () => {
   const [txnReceipt, setTxnReceipt] =
     useState<ethers.providers.TransactionReceipt>();
   const [ethPriceUsd, setEthPriceUsd] = useState<number>(0);
+  const [loading, setLoading] = useState(false);
 
   const init = async (txhash: string) => {
-    const tx = await getTxn(txhash);
-    const txnReceipt = await getTxnReceipt(txhash);
-    const ethPrice = await getEthPrice();
-    setEthPriceUsd(parseInt(ethPrice.ethusd));
+    setLoading(true);
+    try {
+      const tx = await getTxn(txhash);
+      const txnReceipt = await getTxnReceipt(txhash);
+      const ethPrice = await getEthPrice();
+      setEthPriceUsd(parseInt(ethPrice.ethusd));
 
-    if (tx !== null) {
-      setTransaction(tx);
+      if (tx !== null) {
+        setTransaction(tx);
+      }
+      if (txnReceipt !== null) {
+        setTxnReceipt(txnReceipt);
+      }
+    } catch (error) {
+      console.log(error);
     }
-    if (txnReceipt !== null) {
-      setTxnReceipt(txnReceipt);
-    }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -76,15 +83,22 @@ export const TxPage = () => {
   return (
     <div className="px-3 bg-gray-50 pb-36 py-12 flex items-center justify-center">
       <div className="w-full xl:w-[85%] space-y-4">
-        <div className="flex gap-2 items-center">
-          <div className=" font-semibold text-lg">Transaction</div>
-          <p className="text-sm text-gray-500">#{txhash}</p>
+        <div className="sm:flex gap-2 items-center">
+          <div className="font-semibold text-lg">Transaction</div>
+          <p className="w-full text-sm text-gray-500 break-all">#{txhash}</p>
         </div>
         <hr />
         <div>
-          {transaction === undefined || txnReceipt === undefined ? (
+          {loading ? (
             <div className="border bg-white rounded-lg p-4 space-y-4 h-[36rem] flex items-center justify-center">
               <Loader className="w-16 h-16" />
+            </div>
+          ) : txnReceipt === undefined || transaction === undefined ? (
+            <div className="h-[calc(100dvh-20rem)] p-3 gap-3 text-wrap bg-white border rounded-lg text-xl flex flex-col items-center justify-center font-semibold text-center my-auto">
+              <p>Oops! An invalid Txn hash has been entered:</p>
+              <div className="text-sm break-all font-normal text-gray-600">
+                {txhash}
+              </div>
             </div>
           ) : (
             <div className="border bg-white rounded-lg p-4 space-y-4 text-nowrap w-full overflow-x-auto">
@@ -213,7 +227,7 @@ export const TxPage = () => {
 
                 <div className="text-sm md:flex md:gap-6 md:items-start md:py-2">
                   <div className="font-semibold max-md:py-2">Input Data:</div>
-                  <div className="border h-48 bg-gray-50 rounded-lg px-3 text-gray-500 overflow-x-auto overflow-y-auto text-wrap">
+                  <div className="border h-48 w-full bg-gray-50 rounded-lg px-3 text-gray-500 overflow-x-auto overflow-y-auto text-wrap">
                     <div className="font-normal py-2">MethodID: {methodId}</div>
                     <div>
                       {functionArray.map((func, index) => (
