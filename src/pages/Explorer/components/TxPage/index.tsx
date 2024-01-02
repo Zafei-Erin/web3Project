@@ -81,11 +81,11 @@ export const TxPage = () => {
   }
 
   return (
-    <div className="px-3 bg-gray-50 pb-36 py-12 flex items-center justify-center">
+    <div className="px-3 bg-gray-50 pb-36 py-12 flex items-center justify-center break-all">
       <div className="w-full xl:w-[85%] space-y-4">
         <div className="sm:flex gap-2 items-center">
           <div className="font-semibold text-lg">Transaction</div>
-          <p className="w-full text-sm text-gray-500 break-all">#{txhash}</p>
+          <p className="w-full text-sm text-gray-500 ">#{txhash}</p>
         </div>
         <hr />
         <div>
@@ -106,7 +106,7 @@ export const TxPage = () => {
               <div className="space-y-2">
                 <div className="text-sm md:flex md:gap-6 md:items-center max-md:space-y-2">
                   <div className="font-semibold ">Transaction Hash: </div>
-                  <div className="">{txhash}</div>
+                  <div className="text-wrap">{txhash}</div>
                 </div>
                 <div className="font-semibold text-sm flex gap-6 py-2 items-center">
                   Statue:{" "}
@@ -146,7 +146,7 @@ export const TxPage = () => {
                 <div className="font-semibold text-sm md:flex md:gap-6 md:items-center">
                   <div className=" py-2">From:</div>
                   <Link to={`/explorer/account/${transaction.from}`}>
-                    <span className="font-normal py-2 text-sky-600 hover:text-sky-700 transition">
+                    <span className="font-normal py-2 text-sky-600 hover:text-sky-700 transition overflow-hidden text-wrap">
                       {transaction.from}
                     </span>
                   </Link>
@@ -154,7 +154,7 @@ export const TxPage = () => {
                 <div className="font-semibold text-sm md:flex md:gap-6 md:items-center">
                   <div className=" py-2">Interacted With (To):</div>
                   <Link to={`/explorer/account/${transaction.to}`}>
-                    <span className="font-normal py-2 text-sky-600 hover:text-sky-700 transition">
+                    <span className="font-normal py-2 text-sky-600 hover:text-sky-700 transition text-wrap">
                       {transaction.to}
                     </span>
                   </Link>
@@ -205,19 +205,19 @@ export const TxPage = () => {
 
               {/* third section */}
               <div className="space-y-2">
-                <div className="flex gap-2 text-nowrap">
-                  <div className="font-semibold text-xs border rounded-lg bg-gray-50 w-fit px-2 py-1 flex gap-1">
+                <div className="flex gap-2 flex-wrap">
+                  <div className="font-semibold text-xs border text-nowrap rounded-lg bg-gray-50 w-fit px-2 py-1 flex gap-1">
                     <div className="text-gray-500">Txn Type:</div>
                     <span className="font-semibold">
                       {transaction.type}{" "}
                       {transaction.type === 2 && "(EIP-1559)"}
                     </span>
                   </div>
-                  <div className="font-semibold text-xs border rounded-lg bg-gray-50 w-fit px-2 py-1 flex gap-1">
+                  <div className="font-semibold text-xs border text-nowrap rounded-lg bg-gray-50 w-fit px-2 py-1 flex gap-1">
                     <div className="text-gray-500">Nonce:</div>
                     <div className="font-semibold">{transaction.nonce}</div>
                   </div>
-                  <div className="font-semibold text-xs border rounded-lg bg-gray-50 w-fit px-2 py-1 flex gap-1">
+                  <div className="font-semibold text-xs border text-nowrap rounded-lg bg-gray-50 w-fit px-2 py-1 flex gap-1">
                     <div className="text-gray-500">Position In Block: </div>
                     <div className="font-semibold">
                       {txnReceipt.transactionIndex}
