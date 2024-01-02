@@ -1,6 +1,7 @@
 import { ethers } from "ethers";
 import { EthPriceType } from "~/types/types";
 import { provider } from "./InfuraProvider";
+import { getTxn } from "./getTxnInfo";
 
 export type ESRespType = {
   status: string;
@@ -92,16 +93,16 @@ export const getMoreBlocks = async (lastBlockNumber: number) => {
 
 let transactionArray: string[] = [];
 
-export const getLatestTransactions = async () => {
+export const getLatestTxn = async () => {
   const currentBlockNumber = await getLatestBlockNumber();
   const block = await provider.getBlock(currentBlockNumber);
   // Latest Transactions
   transactionArray = block.transactions;
-  const txns = transactionArray.slice(0, DISPLAYNUMBER);
-  const txnsDetails: ethers.providers.TransactionReceipt[] = [];
+  const txnsHashList = transactionArray.slice(0, DISPLAYNUMBER);
+  const txnsDetails: ethers.providers.TransactionResponse[] = [];
   const result = Promise.all(
-    txns.map(async (txn) => {
-      const txnReceipt = await provider.getTransactionReceipt(txn);
+    txnsHashList.map(async (txnHash) => {
+      const txnReceipt = await getTxn(txnHash);
       txnsDetails.push(txnReceipt);
     })
   ).then(() => {
@@ -110,16 +111,16 @@ export const getLatestTransactions = async () => {
   return result;
 };
 
-export const getMoreTransactions = async (page: number) => {
+export const getMoreTxn = async (page: number) => {
   const newTxns = transactionArray.slice(
     DISPLAYNUMBER * page,
     DISPLAYNUMBER * (page + 1)
   );
 
-  const txnsDetails: ethers.providers.TransactionReceipt[] = [];
+  const txnsDetails: ethers.providers.TransactionResponse[] = [];
   const result = Promise.all(
     newTxns.map(async (txn) => {
-      const txnReceipt = await provider.getTransactionReceipt(txn);
+      const txnReceipt = await getTxn(txn);
       txnsDetails.push(txnReceipt);
     })
   ).then(() => {

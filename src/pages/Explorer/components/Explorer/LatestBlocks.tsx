@@ -91,7 +91,7 @@ export const LatestBlocks: React.FC = () => {
               "LOADING..."
             ) : (
               <div className="flex items-center gap-2 justify-center">
-                "VIEW MORE BLOCKS"{" "}
+                VIEW MORE BLOCKS
                 <ArrowDown className="w-4 h-4 hover:stroke-sky-700 stroke-2" />
               </div>
             )}
