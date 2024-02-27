@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getAccountTxns } from "~/api/explorer/getAccountInfo";
-import { formatPrice } from "../Explorer/EtherInfoBox";
+import { formatPrice } from "../Home/EtherInfoBox";
 import { calculateTime } from "~/utils";
 import { Loader } from "~/pages/Swap/components";
 import { ArrowWithBar } from "~/assets";

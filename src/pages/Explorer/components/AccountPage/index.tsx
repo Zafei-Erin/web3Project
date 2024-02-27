@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getAccountBalance } from "~/api/explorer/getAccountInfo";
 import { getEthPrice } from "~/api/explorer/getEthPrice";
-import { formatPrice } from "../Explorer/EtherInfoBox";
+import { formatPrice } from "../Home/EtherInfoBox";
 import { TxnTable } from "./TxnTable";
 import { InternalTxnTable } from "./InternalTxnTable";
 import { Erc20TransferTable } from "./Erc20TransferTable";

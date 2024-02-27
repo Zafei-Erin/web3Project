@@ -1,33 +1,33 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 
-import Header from "./components/Header";
 import { UserAccProvider } from "./context/userAddrProvider";
-import ExpolrerIndexPage from "./pages/Explorer";
-import { AccountPage } from "./pages/Explorer/components/AccountPage";
-import { BlockPage } from "./pages/Explorer/components/BlockPage";
-import { Explorer } from "./pages/Explorer/components/Explorer";
-import { TxPage } from "./pages/Explorer/components/TxPage";
-import { TxnRedirectPage } from "./pages/Explorer/components/TxPage/TxnRedirectPage";
+import ExpolrerIndexPage, {
+  AccountPage,
+  BlockPage,
+  ExplorerHomePage,
+  TxPage,
+  TxnRedirectPage,
+} from "./pages/Explorer";
 import Swap from "./pages/Swap";
 
 function App() {
   return (
     <div>
       <UserAccProvider>
-        <Header />
+        {/* <Header /> */}
         <Routes>
           <Route path="swap" element={<Swap />} />
           <Route path="explorer/*" element={<ExpolrerIndexPage />}>
-            <Route index element={<Explorer />} />
+            <Route index element={<ExplorerHomePage />} />
             <Route path="account/:address" element={<AccountPage />} />
             <Route path="block/:blockId" element={<BlockPage />} />
             <Route path="tx/:txhash" element={<TxPage />} />
             {/* <Route path="txs" element={<TxnForBlockTable />} /> */}
             <Route path="txs" element={<TxnRedirectPage />} />
-            <Route path="*" element={<Explorer />} />
+            <Route path="*" element={<ExplorerHomePage />} />
           </Route>
 
-          <Route path="*" element={<Navigate replace to="swap" />} />
+          <Route path="*" element={<Navigate replace to="explorer" />} />
         </Routes>
       </UserAccProvider>
     </div>

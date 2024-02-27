@@ -3,7 +3,7 @@ import { LatestBlocks } from "./LatestBlocks";
 import { LatestTxns } from "./LatestTxns";
 import SearchSection from "./SearchSection";
 
-export const Explorer = () => {
+export const ExplorerHomePage = () => {
   return (
     <div className="space-y-6 xl:w-4/5 xl:ml-[10rem] px-4 pb-10">
       {/* <SideBar></SideBar> */}
