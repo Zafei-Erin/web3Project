@@ -28,7 +28,7 @@ const EtherInfoBox: React.FC = () => {
   }, []);
 
   return (
-    <div className="md:grid md:grid-cols-2 border rounded-xl w-full flex flex-col max-md:divide-y md:divide-x">
+    <div className="md:grid bg-white md:grid-cols-2 border rounded-xl w-full flex flex-col max-md:divide-y md:divide-x">
       <div className=" divide-y">
         {/* price */}
         <div className="p-4 flex gap-2 items-center justify-start">

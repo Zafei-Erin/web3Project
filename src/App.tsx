@@ -9,12 +9,13 @@ import ExpolrerIndexPage, {
   TxnRedirectPage,
 } from "./pages/Explorer";
 import Swap from "./pages/Swap";
+import Header from "./components/Header";
 
 function App() {
   return (
-    <div>
+    <div className=" bg-gray-50 min-h-screen">
       <UserAccProvider>
-        {/* <Header /> */}
+        <Header />
         <Routes>
           <Route path="swap" element={<Swap />} />
           <Route path="explorer/*" element={<ExpolrerIndexPage />}>
