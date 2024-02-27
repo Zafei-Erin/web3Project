@@ -61,8 +61,8 @@ export const BlockPage = () => {
     );
   }
   return (
-    <div className="px-3 min-h-screen bg-gray-50 py-3 flex items-center justify-center break-all">
-      <div className="w-full xl:w-[85%] space-y-4">
+    <div className="px-3 xl:max-w-[85%] mx-auto w-full bg-gray-50 py-3 flex items-center justify-center break-all">
+      <div className="w-full space-y-4">
         <div className="flex gap-2 items-center">
           <div className=" font-semibold text-lg">Block</div>
           <p className="text-sm text-gray-500">#{blockId}</p>

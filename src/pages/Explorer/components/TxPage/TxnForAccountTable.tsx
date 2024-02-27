@@ -135,7 +135,7 @@ export const TxnForAccountTable = () => {
   };
 
   return (
-    <div className="px-3 bg-gray-50 py-3 min-h-screen flex items-center justify-center">
+    <div className="px-3 bg-gray-50 py-3 min-h-screen flex items-start justify-center">
       <div className="w-full xl:w-[85%] space-y-4">
         {/* header */}
         <div>

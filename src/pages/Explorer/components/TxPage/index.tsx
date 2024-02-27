@@ -84,7 +84,7 @@ export const TxPage = () => {
     <div className="px-3 bg-gray-50 pb-36 py-12 flex items-center justify-center break-all">
       <div className="w-full xl:w-[85%] space-y-4">
         <div className="sm:flex gap-2 items-center">
-          <div className="font-semibold text-lg">Transaction</div>
+          <div className="font-semibold text-nowrap text-lg">Transaction</div>
           <p className="w-full text-sm text-gray-500 ">#{txhash}</p>
         </div>
         <hr />
