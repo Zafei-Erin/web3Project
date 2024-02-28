@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { getBlockTxns } from "~/api/explorer/getBlockInfo";
-import { Loader } from "~/pages/Swap/components";
+import { Loader } from "~/apps/Swap/components";
 import { EthBlockWithTxnsType } from "~/types/types";
 import { calculateTime } from "~/utils";
 import { ethers } from "ethers";

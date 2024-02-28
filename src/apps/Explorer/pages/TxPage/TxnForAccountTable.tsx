@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { Loader } from "~/pages/Swap/components";
+import { Loader } from "~/apps/Swap/components";
 import { EthAccountWithTxnsType } from "~/types/types";
 import { calculateTime } from "~/utils";
 import { ethers } from "ethers";

@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { getAccountInternalTxns } from "~/api/explorer/getAccountInfo";
 import { formatPrice } from "../Home/EtherInfoBox";
 import { calculateTime } from "~/utils";
-import { Loader } from "~/pages/Swap/components";
+import { Loader } from "~/apps/Swap/components";
 
 type InternalTxnType = {
   hash: string;

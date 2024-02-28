@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { getEthPrice } from "~/api/explorer/getEthPrice";
 import { getTxn, getTxnReceipt } from "~/api/explorer/getTxnInfo";
 import { TickIcon } from "~/assets/TickIcon";
-import { Loader } from "~/pages/Swap/components";
+import { Loader } from "~/apps/Swap/components";
 import { calculateTime } from "~/utils";
 
 export const TxPage = () => {

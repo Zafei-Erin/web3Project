@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { getLatestBlocks, getMoreBlocks } from "~/api/explorer/getEthPrice";
 import { ArrowDown } from "~/assets";
 import BoxIcon from "~/assets/BoxIcon";
-import { Loader } from "~/pages/Swap/components";
+import { Loader } from "~/apps/Swap/components";
 
 export const LatestBlocks: React.FC = () => {
   const [blocks, setBlocks] = useState<ethers.providers.Block[]>([]);
@@ -37,7 +37,7 @@ export const LatestBlocks: React.FC = () => {
   return (
     <div className="border bg-white rounded-lg divide-y shadow-lg shadow-gray-100">
       <div className="text-sm font-semibold py-4 px-3">Lastest Blocks</div>
-      
+
       {blocks.length === 0 ? (
         <div className="h-[20rem] flex items-center justify-center">
           <Loader className="w-20 h-20" />

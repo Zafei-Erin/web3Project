@@ -8,10 +8,24 @@ const SearchSection = () => {
 
   const search = () => {
     const address = inputRef.current?.value.trim();
+    if (!address) {
+      return;
+    }
     if (inputRef.current) {
       inputRef.current.value = "";
     }
-    navigate(`/accounts?${address}`);
+
+    if (address.length === 40) {
+      navigate(`account/${address}`);
+    } else if (address.length === 64) {
+      navigate(`tx/${address}`);
+    } else if (!address.startsWith("0x") && !isNaN(+address)) {
+      console.log(+address);
+
+      navigate(`block/${address}`);
+    } else {
+      navigate(`error`);
+    }
   };
   return (
     <div className="">
@@ -21,7 +35,7 @@ const SearchSection = () => {
       <div className="flex bg-white max-w-[40rem] h-12 justify-between items-center border rounded-lg p-1.5">
         <input
           className="bg-transparent px-4 w-5/6 outline-none text-base"
-          placeholder="Search by Address / Txn Hash / Block / Token / Domain Name"
+          placeholder="Search by Address / Txn Hash / Block Number"
           ref={inputRef}
           onKeyDown={(e) => {
             e.key === "Enter" && search();

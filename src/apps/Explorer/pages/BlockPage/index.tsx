@@ -5,7 +5,7 @@ import { getBlock } from "~/api/explorer/getBlockInfo";
 import { getLatestBlockNumber } from "~/api/explorer/getEthPrice";
 import { ChevronDownIcon } from "~/assets";
 import { Tooltip } from "~/components/Tooltip";
-import { Loader } from "~/pages/Swap/components";
+import { Loader } from "~/apps/Swap/components";
 import { calculateTime } from "~/utils";
 
 export const BlockPage = () => {

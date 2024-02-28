@@ -4,11 +4,12 @@ import { UserAccProvider } from "./context/userAddrProvider";
 import ExpolrerIndexPage, {
   AccountPage,
   BlockPage,
+  ErrorPage,
   ExplorerHomePage,
   TxPage,
   TxnRedirectPage,
-} from "./pages/Explorer";
-import Swap from "./pages/Swap";
+} from "./apps/Explorer";
+import Swap from "./apps/Swap";
 import Header from "./components/Header";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             <Route path="tx/:txhash" element={<TxPage />} />
             {/* <Route path="txs" element={<TxnForBlockTable />} /> */}
             <Route path="txs" element={<TxnRedirectPage />} />
+            <Route path="error" element={<ErrorPage />} />
             <Route path="*" element={<ExplorerHomePage />} />
           </Route>
 

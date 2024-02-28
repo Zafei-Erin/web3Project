@@ -1,33 +1,55 @@
-import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getAccountERC20TokenTransfer } from "~/api/explorer/getAccountInfo";
-import { formatPrice } from "../Home/EtherInfoBox";
-import { calculateTime } from "~/utils";
-import { Loader } from "~/pages/Swap/components";
 
-type Erc20TransferType = {
+import {
+  getAccountERC1155TokenTransfer,
+  getAccountNFTTokenTransfer,
+} from "~/api/explorer/getAccountInfo";
+import { NFTIcon } from "~/assets";
+import { Loader } from "~/apps/Swap/components";
+import { calculateTime } from "~/utils";
+
+type TransferType = {
   hash: string;
-  methodId: string;
   timeStamp: string;
-  blockNumber: string;
   from: string;
   to: string;
-  value: string;
+  tokenID: string;
+  tokenName: string;
   tokenSymbol: string;
-  tokenDecimal: string;
+  type: string;
 };
 
 const gridTemplateColumns =
-  "minmax(10rem, 1fr) minmax(6rem, 1fr) minmax(9rem, 1fr) minmax(9rem, 1fr) minmax(7rem, 1fr) minmax(7rem, 1fr)";
+  "minmax(10rem, 1fr) minmax(6rem, 1fr) minmax(9rem, 1fr) minmax(9rem, 1fr) minmax(5rem, 1fr) minmax(12rem, 1fr)";
 
-export const Erc20TransferTable: React.FC = () => {
+export const NFTTransferTable: React.FC = () => {
   const { address } = useParams();
-  const [data, setData] = useState<Erc20TransferType[]>();
+  const [data, setData] = useState<TransferType[]>();
 
   const init = async (address: string) => {
-    const resp = await getAccountERC20TokenTransfer(address, 15);
-    setData(resp);
+    const nftResp: TransferType[] = await getAccountNFTTokenTransfer(
+      address,
+      15
+    );
+    const erc1155Resp: TransferType[] = await getAccountERC1155TokenTransfer(
+      address,
+      15
+    );
+    const nftRespLabled = nftResp.map((resp) => {
+      resp.type = "ERC-721";
+      return resp;
+    });
+    const erc1155RespLabled = erc1155Resp.map((resp) => {
+      resp.type = "ERC-1155";
+      return resp;
+    });
+
+    nftRespLabled.push(...erc1155RespLabled);
+    nftRespLabled.sort((a, b) => {
+      return parseInt(b.timeStamp) - parseInt(a.timeStamp);
+    });
+    setData(nftRespLabled);
   };
 
   useEffect(() => {
@@ -49,7 +71,7 @@ export const Erc20TransferTable: React.FC = () => {
       <p className="mb-6 text-sm">
         {`Latest ${
           data && (data?.length > 15 ? "15" : data.length)
-        } ERC-20 Token Transfer Events`}
+        } NFT Transfer Events`}
       </p>
       <table className="w-full border-collapse text-xs ">
         <thead>
@@ -63,8 +85,8 @@ export const Erc20TransferTable: React.FC = () => {
             <th className="text-start">Age</th>
             <th className="text-start">From</th>
             <th className="text-start">To</th>
-            <th className="text-start">Value</th>
-            <th className="text-start">Token</th>
+            <th className="text-start">Type</th>
+            <th className="text-start">Item</th>
           </tr>
         </thead>
         <tbody className=" divide-y">
@@ -95,15 +117,23 @@ export const Erc20TransferTable: React.FC = () => {
                       {txn.to.slice(0, 8)}...{txn.to.slice(34)}
                     </Link>
                   </td>
-                  <td>
-                    {formatPrice(
-                      ethers.utils.formatUnits(txn.value, txn.tokenDecimal),
-                      {
-                        maximumFractionDigits: 8,
-                      }
-                    )}{" "}
+                  <td className="flex items-center justify-start">
+                    <div className="border px-2 py-1 rounded-full text-center text-xs">
+                      {txn.type}
+                    </div>
                   </td>
-                  <td>{txn.tokenSymbol}</td>
+                  <td className="w-full flex items-center justify-start gap-2 overflow-hidden">
+                    <NFTIcon className="flex-none w-9 h-9 border rounded-lg p-1 object-contain" />
+                    <div className="">
+                      <div className="text-start">
+                        {txn.tokenSymbol} #{txn.tokenID.slice(0, 4)}
+                        {txn.tokenID.length > 4 && "..."}
+                      </div>
+                      <div className="text-start text-xs text-gray-500">
+                        {txn.tokenName}
+                      </div>
+                    </div>
+                  </td>
                 </tr>
               );
             })}

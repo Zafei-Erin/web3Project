@@ -59,7 +59,7 @@ const EtherInfoBox: React.FC = () => {
           <MarketCapIcon className="w-7 h-7" />
           <div>
             <p className="text-xs text-gray-500">MARKET CAP</p>
-            <p className="h-6">123</p>
+            <p className="h-6">-</p>
           </div>
         </div>
       </div>
@@ -78,7 +78,7 @@ const EtherInfoBox: React.FC = () => {
           <TransactionIcon className="w-7 h-7" />
           <div>
             <p className="text-xs text-gray-500">TRANSACTIONS</p>
-            <p className="h-6">132</p>
+            <p className="h-6">-</p>
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { getLatestTxn, getMoreTxn } from "~/api/explorer/getEthPrice";
 import { ArrowDown } from "~/assets";
 import BoxIcon from "~/assets/BoxIcon";
-import { Loader } from "~/pages/Swap/components";
+import { Loader } from "~/apps/Swap/components";
 
 export const LatestTxns: React.FC = () => {
   const [transaction, setTransaction] = useState<
