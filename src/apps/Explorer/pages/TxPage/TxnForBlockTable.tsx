@@ -37,11 +37,11 @@ export const TxnForBlockTable = () => {
 
   const PageTab: React.FC = () => {
     return (
-      <div className="flex gap-1 items-center justify-end">
+      <div className="flex gap-1 items-center justify-end text-xs">
         <button
           onClick={() => setPage(1)}
           disabled={page === 1}
-          className={`text-sm border rounded-lg py-1 px-1.5 transition
+          className={`border rounded-lg py-1 px-1.5 transition
           ${
             page === 1
               ? "text-gray-500 bg-gray-50 border-gray-200"
@@ -58,12 +58,15 @@ export const TxnForBlockTable = () => {
           className="border transition rounded-lg px-0.5 hover:border-sky-600 hover:bg-sky-600 disabled:border-gray-200 disabled:text-gray-500 disabled:bg-gray-50"
         >
           <ArrowDown
-            className={`transition rotate-90 w-[1.8rem] h-[1.8rem] py-[0.3rem] px-1 stroke-2 ${
+            className={`transition rotate-90 w-[1.5rem] h-[1.5rem] px-1 stroke-2 ${
               page === 1 ? "text-gray-500" : "text-sky-600 hover:text-white"
             } `}
           />
         </button>
-        <div className="border rounded-lg bg-gray-50 text-gray-500 py-1 px-2 text-sm">
+        <div className="border rounded-lg bg-gray-50 text-gray-500 py-1 px-2 sm:hidden">
+          {page}/{maxPage}
+        </div>
+        <div className="border rounded-lg bg-gray-50 text-gray-500 py-1 px-2 hidden sm:block">
           Page {page} of {maxPage}
         </div>
         <button
@@ -74,7 +77,7 @@ export const TxnForBlockTable = () => {
           className="border transition rounded-lg px-0.5 hover:border-sky-600 hover:bg-sky-600 disabled:border-gray-200 disabled:text-gray-500 disabled:bg-gray-50"
         >
           <ArrowDown
-            className={`transition -rotate-90 w-[1.8rem] h-[1.8rem] py-[0.3rem] px-1 stroke-2 ${
+            className={`transition -rotate-90 w-[1.5rem] h-[1.5rem] px-1 stroke-2 ${
               page === maxPage
                 ? "text-gray-500"
                 : "text-sky-600 hover:text-white"
@@ -85,7 +88,7 @@ export const TxnForBlockTable = () => {
         <button
           onClick={() => setPage(maxPage || 1)}
           disabled={page === maxPage}
-          className={`text-sm border rounded-lg py-1 px-1.5 transition
+          className={`border rounded-lg py-1 px-1.5 transition
           ${
             page === maxPage
               ? "text-gray-500 bg-gray-50 border-gray-200"
@@ -125,89 +128,97 @@ export const TxnForBlockTable = () => {
               <Loader className="w-16 h-16" />
             </div>
           ) : (
-            <div className="border bg-white rounded-lg p-4 space-y-4 w-full overflow-x-auto">
+            <div className="border bg-white rounded-lg p-4 space-y-4 w-full">
               {txns && txns.length > 0 && (
-                <div>
+                <div className="">
                   {/* tab */}
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between sticky right-0 left-0">
                     <p className="text-sm">
                       A total of {txns.length} internal transactions found
                     </p>
                     <PageTab />
                   </div>
-                  <table className="w-full border-collapse text-xs ">
-                    <thead>
-                      <tr
-                        className="grid p-4 gap-4 border-b w-full overflow-x-auto "
-                        style={{
-                          gridTemplateColumns: gridTemplateColumns,
-                        }}
-                      >
-                        <th className="text-start">Block</th>
-                        <th className="text-start">Age</th>
-                        <th className="text-start">Parent Txn Hash</th>
-                        <th className="text-start">Type</th>
-                        <th className="text-start">From</th>
-                        <th></th>
-                        <th className="text-start">To</th>
-                        <th className="text-start">Value</th>
-                      </tr>
-                    </thead>
-                    <tbody className=" divide-y">
-                      {txns
-                        .slice((page - 1) * pageSize, page * pageSize)
-                        .map((txn, index) => {
-                          return (
-                            <tr
-                              key={index}
-                              className="grid text-start py-3 px-4 gap-4 hover:bg-gray-100 text-sm text-nowrap"
-                              style={{
-                                gridTemplateColumns: gridTemplateColumns,
-                              }}
-                            >
-                              <td className="text-sky-600 hover:text-sky-700 text-sm">
-                                {index == 0 && (
+                  
+                  <div className="overflow-x-auto ">
+                    <table className="w-full border-collapse text-xs ">
+                      <thead>
+                        <tr
+                          className="grid p-4 gap-4 border-b w-full overflow-x-auto "
+                          style={{
+                            gridTemplateColumns: gridTemplateColumns,
+                          }}
+                        >
+                          <th className="text-start">Block</th>
+                          <th className="text-start">Age</th>
+                          <th className="text-start">Parent Txn Hash</th>
+                          <th className="text-start">Type</th>
+                          <th className="text-start">From</th>
+                          <th></th>
+                          <th className="text-start">To</th>
+                          <th className="text-start">Value</th>
+                        </tr>
+                      </thead>
+                      <tbody className=" divide-y">
+                        {txns
+                          .slice((page - 1) * pageSize, page * pageSize)
+                          .map((txn, index) => {
+                            return (
+                              <tr
+                                key={index}
+                                className="grid text-start py-3 px-4 gap-4 hover:bg-gray-100 text-sm text-nowrap"
+                                style={{
+                                  gridTemplateColumns: gridTemplateColumns,
+                                }}
+                              >
+                                <td className="text-sky-600 hover:text-sky-700 text-sm">
+                                  {index == 0 && (
+                                    <Link
+                                      to={`/explorer/block/${txn.blockNumber}`}
+                                    >
+                                      {txn.blockNumber}
+                                    </Link>
+                                  )}
+                                </td>
+                                <td className="">
+                                  {index == 0 && calculateTime(txn.timeStamp)}
+                                </td>
+                                <td className=" flex items-center justify-start gap-1">
+                                  <TickIcon className="w-4 h-4 fill-emerald-600 text-" />
                                   <Link
-                                    to={`/explorer/block/${txn.blockNumber}`}
+                                    to={`/explorer/tx/${txn.hash}`}
+                                    className="text-sky-600 hover:text-sky-700"
                                   >
-                                    {txn.blockNumber}
+                                    {txn.hash.slice(0, 19)}...
                                   </Link>
-                                )}
-                              </td>
-                              <td className="">
-                                {index == 0 && calculateTime(txn.timeStamp)}
-                              </td>
-                              <td className=" flex items-center justify-start gap-1">
-                                <TickIcon className="w-4 h-4 fill-emerald-600 text-" />
-                                <Link
-                                  to={`/explorer/tx/${txn.hash}`}
-                                  className="text-sky-600 hover:text-sky-700"
-                                >
-                                  {txn.hash.slice(0, 19)}...
-                                </Link>
-                              </td>
-                              <td className="flex justify-start">{txn.type}</td>
-                              <td className="text-sky-600 hover:text-sky-700 text-sm ">
-                                <Link to={`/explorer/account/${txn.from}`}>
-                                  {txn.from.slice(0, 8)}...{txn.from.slice(34)}
-                                </Link>
-                              </td>
-                              <td>
-                                <FromToIcon className="w-7 h-7" />
-                              </td>
-                              <td className="text-sky-600 hover:text-sky-700">
-                                <Link to={`/explorer/account/${txn.to}`}>
-                                  {txn.to.slice(0, 8)}...{txn.to.slice(34)}
-                                </Link>
-                              </td>
-                              <td>{ethers.utils.formatEther(txn.value)} ETH</td>
-                            </tr>
-                          );
-                        })}
-                    </tbody>
-                  </table>
+                                </td>
+                                <td className="flex justify-start">
+                                  {txn.type}
+                                </td>
+                                <td className="text-sky-600 hover:text-sky-700 text-sm ">
+                                  <Link to={`/explorer/account/${txn.from}`}>
+                                    {txn.from.slice(0, 8)}...
+                                    {txn.from.slice(34)}
+                                  </Link>
+                                </td>
+                                <td>
+                                  <FromToIcon className="w-7 h-7" />
+                                </td>
+                                <td className="text-sky-600 hover:text-sky-700">
+                                  <Link to={`/explorer/account/${txn.to}`}>
+                                    {txn.to.slice(0, 8)}...{txn.to.slice(34)}
+                                  </Link>
+                                </td>
+                                <td>
+                                  {ethers.utils.formatEther(txn.value)} ETH
+                                </td>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                    </table>
+                  </div>
 
-                  <div className="flex gap-1 items-center justify-between">
+                  <div className="flex pt-4 gap-1 items-center justify-between">
                     <div className=" flex items-center justify-start gap-2">
                       <div className=" text-sm text-gray-500 text-nowrap">
                         Show rows:

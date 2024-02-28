@@ -73,11 +73,11 @@ export const TxnForAccountTable = () => {
 
   const PageTab: React.FC = () => {
     return (
-      <div className="flex gap-1 items-center">
+      <div className="flex gap-1 items-center text-xs">
         <button
           onClick={() => setPage(1)}
           disabled={page === 1}
-          className={`text-sm border rounded-lg py-1 px-1.5 transition
+          className={`border rounded-lg py-1 px-1.5 transition
           ${
             page === 1
               ? "text-gray-500 bg-gray-50 border-gray-200"
@@ -94,12 +94,15 @@ export const TxnForAccountTable = () => {
           className="border transition rounded-lg px-0.5 hover:border-sky-600 hover:bg-sky-600 disabled:border-gray-200 disabled:text-gray-500 disabled:bg-gray-50"
         >
           <ArrowDown
-            className={`transition rotate-90 w-[1.8rem] h-[1.8rem] py-[0.3rem] px-1 stroke-2 ${
+            className={`transition rotate-90 w-[1.5rem] h-[1.5rem] px-1 stroke-2 ${
               page === 1 ? "text-gray-500" : "text-sky-600 hover:text-white"
             } `}
           />
         </button>
-        <div className="border rounded-lg bg-gray-50 text-gray-500 py-1 px-2 text-sm">
+        <div className="border rounded-lg bg-gray-50 text-gray-500 py-1 px-2 sm:hidden">
+          {page}/{maxPage}
+        </div>
+        <div className="border rounded-lg bg-gray-50 text-gray-500 py-1 px-2 hidden sm:block">
           Page {page} of {maxPage}
         </div>
         <button
@@ -110,7 +113,7 @@ export const TxnForAccountTable = () => {
           className="border transition rounded-lg px-0.5 hover:border-sky-600 hover:bg-sky-600 disabled:border-gray-200 disabled:text-gray-500 disabled:bg-gray-50"
         >
           <ArrowDown
-            className={`transition -rotate-90 w-[1.8rem] h-[1.8rem] py-[0.3rem] px-1 stroke-2 ${
+            className={`transition -rotate-90 w-[1.5rem] h-[1.5rem] px-1 stroke-2 ${
               page === maxPage
                 ? "text-gray-500"
                 : "text-sky-600 hover:text-white"
@@ -121,7 +124,7 @@ export const TxnForAccountTable = () => {
         <button
           onClick={() => setPage(maxPage || 1)}
           disabled={page === maxPage}
-          className={`text-sm border rounded-lg py-1 px-1.5 transition
+          className={`border rounded-lg py-1 px-1.5 transition
           ${
             page === maxPage
               ? "text-gray-500 bg-gray-50 border-gray-200"
@@ -135,11 +138,11 @@ export const TxnForAccountTable = () => {
   };
 
   return (
-    <div className="px-3 bg-gray-50 py-3 min-h-screen flex items-start justify-center">
+    <div className="px-3 bg-gray-50 py-3 flex items-start justify-center">
       <div className="w-full xl:w-[85%] space-y-4">
         {/* header */}
         <div>
-          <div className=" font-semibold text-lg">Transactions</div>
+          <div className="font-semibold text-lg">Transactions</div>
           <p className="text-sm ">
             For{" "}
             <Link
@@ -159,124 +162,132 @@ export const TxnForAccountTable = () => {
               <Loader className="w-16 h-16" />
             </div>
           ) : (
-            <div className="border bg-white rounded-lg p-4 space-y-4 w-full overflow-x-auto">
+            <div className="border bg-white rounded-lg p-4 space-y-4 w-full">
               {txns && txns.length > 0 && (
                 <div>
                   {/* tab */}
-                  <div className="sm:flex items-center justify-between">
+                  <div className="flex items-center justify-between sticky right-0 left-0">
                     <p className="text-sm">
                       A total of {txns.length.toLocaleString()} internal
                       transactions found
                     </p>
                     <PageTab />
                   </div>
-                  <table className="w-full border-collapse text-xs ">
-                    <thead>
-                      <tr
-                        className="grid p-4 gap-4 border-b w-full overflow-x-auto text-nowrap"
-                        style={{
-                          gridTemplateColumns: gridTemplateColumns,
-                        }}
-                      >
-                        <th className="text-start">Txn Hash</th>
-                        <th className="text-start">Method</th>
-                        <th className="text-start">Block</th>
-                        <th className="text-start">Age</th>
-                        <th className="text-start">From</th>
-                        <th></th>
-                        <th className="text-start">To</th>
-                        <th className="text-start">Value</th>
-                        <th className="text-start">Txn Fee</th>
-                      </tr>
-                    </thead>
-                    <tbody className=" divide-y">
-                      {txns
-                        .slice((page - 1) * pageSize, page * pageSize)
-                        .map((txn, index) => {
-                          const direction =
-                            txn.from === txn.to
-                              ? "SELF"
-                              : txn.from === address
-                              ? "OUT"
-                              : "IN";
-                          const txnFee = BigInt(
-                            parseFloat(txn.gasPrice) * parseFloat(txn.gasUsed)
-                          );
-                          const txnFeeFormatted = ethers.utils
-                            .formatEther(txnFee)
-                            .slice(0, 10);
-                          return (
-                            <tr
-                              key={index}
-                              className="grid text-start py-3 px-4 gap-4 hover:bg-gray-100 text-sm text-nowrap"
-                              style={{
-                                gridTemplateColumns: gridTemplateColumns,
-                              }}
-                            >
-                              <td>
-                                <Link
-                                  to={`/explorer/tx/${txn.hash}`}
-                                  className="text-sky-600 hover:text-sky-700"
-                                >
-                                  {txn.hash.slice(0, 19)}...
-                                </Link>
-                              </td>
-                              <td className="flex justify-start max-w-full">
-                                <Tooltip
-                                  content={
-                                    MethodMap.get(txn.methodId)?.message ||
-                                    txn.methodId
-                                  }
-                                  className=" max-w-[20rem] text-wrap text-center"
-                                >
-                                  <div className=" max-w-[8rem] truncate bg-gray-50 border px-4 py-1 rounded-lg text-xs">
-                                    {MethodMap.get(txn.methodId)?.method ||
-                                      txn.methodId}
-                                  </div>
-                                </Tooltip>
-                              </td>
-                              <td className="text-sky-600 hover:text-sky-700 text-sm">
-                                <Link to={`/explorer/block/${txn.blockNumber}`}>
-                                  {txn.blockNumber}
-                                </Link>
-                              </td>
-                              <td className="">
-                                {calculateTime(txn.timeStamp)}
-                              </td>
 
-                              <td className="text-sky-600 hover:text-sky-700 text-sm ">
-                                <Link to={`/explorer/account/${txn.from}`}>
-                                  {txn.from.slice(0, 8)}...{txn.from.slice(34)}
-                                </Link>
-                              </td>
-                              <td
-                                className={`text-xs font-semibold border text-center rounded-lg py-1 ${
-                                  direction === "SELF"
-                                    ? "text-gray-500 bg-gray-100"
-                                    : direction === "OUT"
-                                    ? "text-amber-600 bg-amber-100/60 border-amber-100"
-                                    : " text-emerald-600 bg-emerald-100/60 border-emerald-300"
-                                }`}
+                  <div className=" overflow-x-auto">
+                    <table className="w-full border-collapse text-xs ">
+                      <thead>
+                        <tr
+                          className="grid p-4 gap-4 border-b w-full overflow-x-auto text-nowrap"
+                          style={{
+                            gridTemplateColumns: gridTemplateColumns,
+                          }}
+                        >
+                          <th className="text-start">Txn Hash</th>
+                          <th className="text-start">Method</th>
+                          <th className="text-start">Block</th>
+                          <th className="text-start">Age</th>
+                          <th className="text-start">From</th>
+                          <th></th>
+                          <th className="text-start">To</th>
+                          <th className="text-start">Value</th>
+                          <th className="text-start">Txn Fee</th>
+                        </tr>
+                      </thead>
+                      <tbody className=" divide-y">
+                        {txns
+                          .slice((page - 1) * pageSize, page * pageSize)
+                          .map((txn, index) => {
+                            const direction =
+                              txn.from === txn.to
+                                ? "SELF"
+                                : txn.from === address
+                                ? "OUT"
+                                : "IN";
+                            const txnFee = BigInt(
+                              parseFloat(txn.gasPrice) * parseFloat(txn.gasUsed)
+                            );
+                            const txnFeeFormatted = ethers.utils
+                              .formatEther(txnFee)
+                              .slice(0, 10);
+                            return (
+                              <tr
+                                key={index}
+                                className="grid text-start py-3 px-4 gap-4 hover:bg-gray-100 text-sm text-nowrap"
+                                style={{
+                                  gridTemplateColumns: gridTemplateColumns,
+                                }}
                               >
-                                {direction}
-                              </td>
-                              <td className="text-sky-600 hover:text-sky-700">
-                                <Link to={`/explorer/account/${txn.to}`}>
-                                  {txn.to.slice(0, 8)}...{txn.to.slice(34)}
-                                </Link>
-                              </td>
-                              <td>{ethers.utils.formatEther(txn.value)} ETH</td>
+                                <td>
+                                  <Link
+                                    to={`/explorer/tx/${txn.hash}`}
+                                    className="text-sky-600 hover:text-sky-700"
+                                  >
+                                    {txn.hash.slice(0, 19)}...
+                                  </Link>
+                                </td>
+                                <td className="flex justify-start max-w-full">
+                                  <Tooltip
+                                    content={
+                                      MethodMap.get(txn.methodId)?.message ||
+                                      txn.methodId
+                                    }
+                                    className=" max-w-[20rem] text-wrap text-center"
+                                  >
+                                    <div className=" max-w-[8rem] truncate bg-gray-50 border px-4 py-1 rounded-lg text-xs">
+                                      {MethodMap.get(txn.methodId)?.method ||
+                                        txn.methodId}
+                                    </div>
+                                  </Tooltip>
+                                </td>
+                                <td className="text-sky-600 hover:text-sky-700 text-sm">
+                                  <Link
+                                    to={`/explorer/block/${txn.blockNumber}`}
+                                  >
+                                    {txn.blockNumber}
+                                  </Link>
+                                </td>
+                                <td className="">
+                                  {calculateTime(txn.timeStamp)}
+                                </td>
 
-                              <td className="text-xs text-gray-500">
-                                {txnFeeFormatted}
-                              </td>
-                            </tr>
-                          );
-                        })}
-                    </tbody>
-                  </table>
+                                <td className="text-sky-600 hover:text-sky-700 text-sm ">
+                                  <Link to={`/explorer/account/${txn.from}`}>
+                                    {txn.from.slice(0, 8)}...
+                                    {txn.from.slice(34)}
+                                  </Link>
+                                </td>
+                                <td
+                                  className={`text-xs font-semibold border text-center rounded-lg py-1 ${
+                                    direction === "SELF"
+                                      ? "text-gray-500 bg-gray-100"
+                                      : direction === "OUT"
+                                      ? "text-amber-600 bg-amber-100/60 border-amber-100"
+                                      : " text-emerald-600 bg-emerald-100/60 border-emerald-300"
+                                  }`}
+                                >
+                                  {direction}
+                                </td>
+                                <td className="text-sky-600 hover:text-sky-700">
+                                  <Link to={`/explorer/account/${txn.to}`}>
+                                    {txn.to.slice(0, 8)}...{txn.to.slice(34)}
+                                  </Link>
+                                </td>
+                                <td>
+                                  {ethers.utils.formatEther(txn.value)} ETH
+                                </td>
 
-                  <div className="sm:flex space-y-2 items-center justify-between">
+                                <td className="text-xs text-gray-500">
+                                  {txnFeeFormatted}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div className="flex pt-4 gap-1 items-center justify-between">
                     <div className="flex items-center justify-start gap-2">
                       <div className=" text-sm text-gray-500 text-nowrap">
                         Show rows:
