@@ -1,7 +1,10 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { LightLogo } from "../assets";
+import { SearchBar } from "./SearchBar";
 
 const Header = () => {
+  const location = useLocation();
+
   return (
     <div className="border-b bg-white">
       <header className="h-14 items-center flex justify-between gap-3 px-6 xl:max-w-[90%] mx-auto">
@@ -20,6 +23,11 @@ const Header = () => {
             </div>
           </Link>
         </div>
+
+        {!(location.pathname === "/explorer") && (
+          <SearchBar className="ml-3 w-full text-sm h-10 bg-gray-50" />
+        )}
+
         {/* <ConnectWallet /> */}
       </header>
       <Outlet />

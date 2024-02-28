@@ -48,10 +48,7 @@ export const LatestBlocks: React.FC = () => {
             {blocks &&
               blocks.map((block, index) => {
                 return (
-                  <div
-                    key={index}
-                    className="flex justify-between items-center text-sm"
-                  >
+                  <div key={index} className="grid grid-cols-2 text-sm">
                     <div className="py-4 flex gap-2 items-center">
                       <BoxIcon className="w-12 h-12 p-3 text-gray-600 bg-gray-100 rounded-lg" />
                       <div>
@@ -61,7 +58,7 @@ export const LatestBlocks: React.FC = () => {
                         <div className="text-gray-500">{block.timestamp}</div>
                       </div>
                     </div>
-                    <div>
+                    <div className="pr-1 flex flex-col items-start justify-center justify-self-end">
                       <div>
                         Miner:{" "}
                         <Link to={`account/${block.miner}`}>
@@ -70,7 +67,7 @@ export const LatestBlocks: React.FC = () => {
                           </div>
                         </Link>
                       </div>
-                      <div className="flex gap-1">
+                      <div className="flex gap-1 items-center">
                         <Link to={`block/${block.number}`}>
                           <div className="text-sky-600 hover:text-sky-700">
                             {block.transactions.length} txns

@@ -57,7 +57,7 @@ export const LatestTxns: React.FC = () => {
                 return (
                   <div
                     key={index}
-                    className="sm:flex justify-between items-center text-sm"
+                    className="sm:flex justify-between items-center text-sm max-sm:p-4"
                   >
                     <div className="sm:py-4 flex gap-2 items-center">
                       <BoxIcon className="max-sm:hidden w-12 h-12 p-3 text-gray-600 bg-gray-100 rounded-lg" />
@@ -80,7 +80,7 @@ export const LatestTxns: React.FC = () => {
                           </p>
                         </Link>
                       </div>
-                      <div className="flex gap-1">
+                      <div className="flex gap-1.5 items-center">
                         to
                         <Link to={`account/${txn.to}`}>
                           <p className="text-sky-600 hover:text-sky-700">
@@ -88,12 +88,12 @@ export const LatestTxns: React.FC = () => {
                             {txn.to?.slice(0, 8)}...{txn.to?.slice(34)}
                           </p>
                         </Link>
-                        <div className="sm:hidden border rounded-md w-fit text-xs font-semibold border-gray-300 px-1.5 py-0.5">
+                        <div className="sm:hidden border rounded-md w-fit text-[10px] font-semibold border-gray-300 px-2">
                           {valueFormatted} ETH
                         </div>
                       </div>
                     </div>
-                    <div className="max-sm:hidden border rounded-md w-fit text-xs font-semibold border-gray-300 px-1.5 py-0.5">
+                    <div className="max-sm:hidden border rounded-md w-fit text-[10px] font-semibold border-gray-300 px-2">
                       {valueFormatted} ETH
                     </div>
                   </div>

@@ -6,7 +6,7 @@ import { getLatestBlockNumber } from "~/api/explorer/getEthPrice";
 import { ChevronDownIcon } from "~/assets";
 import { Tooltip } from "~/components/Tooltip";
 import { Loader } from "~/apps/Swap/components";
-import { calculateTime } from "~/utils";
+import { calculateTime, cn } from "~/utils";
 
 export const BlockPage = () => {
   const { blockId } = useParams();
@@ -121,13 +121,22 @@ export const BlockPage = () => {
                 <div className="font-semibold text-sm md:flex md:gap-6">
                   <div className=" py-2">Transactions:</div>
                   <span className="font-normal py-2 flex items-center gap-1">
-                    <Tooltip content="click to view internal transactions">
+                    <Tooltip
+                      className={cn(
+                        block.transactions.length === 0 && "hidden"
+                      )}
+                      content="click to view internal transactions"
+                    >
                       <Link
                         to={{
                           pathname: "/explorer/txs",
                           search: `?block=${block.number}`,
                         }}
-                        className="text-sky-600 hover:text-sky-700"
+                        className={cn(
+                          block.transactions.length !== 0
+                            ? "text-sky-600 hover:text-sky-700"
+                            : "pointer-events-none"
+                        )}
                       >
                         {block.transactions.length} transactions
                       </Link>
