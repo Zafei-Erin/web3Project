@@ -4,7 +4,7 @@ An Etherscan clone project that allow users to query on blocks, transactions and
 
 ## Link to the web app
 
-https://web3-project-phi.vercel.app/explorer
+https://web3-project-zafei-erin.vercel.app/explorer
 
 ### (Swap)
 
