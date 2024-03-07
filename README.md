@@ -8,4 +8,4 @@ https://web3-project-zafei-erin.vercel.app/explorer
 
 ### (Swap)
 
-An Uniswap clone powered by Ox. Development is still ongoing.
+An Uniswap clone powered by 0x. Development is still ongoing.
