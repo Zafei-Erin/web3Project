@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 export const ErrorPage = () => {
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get("q");
   return (
     <div className="p-6 pt-16 pr-6 transition-all bg-white ">
       <div className="bg-[url('/src/assets/error-img.jpg')] xl:max-w-[90%] h-72  w-full mx-auto bg-contain bg-no-repeat bg-right">
@@ -11,7 +13,7 @@ export const ErrorPage = () => {
           <div className="py-3 text-gray-600 text-sm space-y-1 mb-6">
             <p>
               Oops! The search string you entered was:{" "}
-              <span className="font-semibold">abc</span>
+              <span className="font-semibold">{query}</span>
             </p>
             <p>Sorry! This is an invalid search string.</p>
           </div>

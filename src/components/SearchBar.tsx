@@ -20,14 +20,14 @@ export const SearchBar: React.FC<Props> = ({ className }) => {
       inputRef.current.value = "";
     }
 
-    if (address.length === 40) {
+    if (address.length === 42) {
       navigate(`/explorer/account/${address}`);
     } else if (address.length === 64) {
       navigate(`/explorer/tx/${address}`);
     } else if (!address.startsWith("0x") && !isNaN(+address)) {
       navigate(`/explorer/block/${address}`);
     } else {
-      navigate(`/explorer/error`);
+      navigate(`/explorer/error?q=${address}`);
     }
   };
   return (
